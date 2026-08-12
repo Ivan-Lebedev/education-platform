@@ -1,0 +1,30 @@
+from dataclasses import dataclass
+from enum import StrEnum
+from uuid import UUID
+
+from app.domain.exceptions import InvalidUserError
+
+
+class UserRole(StrEnum):
+    STUDENT = 'student'
+    AUTHOR = 'author'
+    ADMIN = 'admin'
+
+
+@dataclass(slots=True)
+class User:
+    "Пользователь образовательной платформы."
+
+    id: UUID
+    email: str
+    hashed_password: str
+    role: UserRole
+
+    def __post_init__(self) -> None:
+        self._validate()
+
+    def _validate(self) -> None:
+        if not self.email or '@' not in self.email:
+            raise InvalidUserError('User email is invalid.')
+        if not self.hashed_password or not self.hashed_password.strip():
+            raise InvalidUserError('User hashed password cannot be empty.')
