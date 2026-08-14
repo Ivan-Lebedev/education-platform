@@ -8,3 +8,7 @@ class CourseRepository(ABC):
     @abstractmethod
     async def get_by_id(self, course_id: UUID) -> Course | None:
         raise NotImplementedError
+
+    @abstractmethod
+    async def list(self) -> 'list[Course]':
+        raise NotImplementedError
