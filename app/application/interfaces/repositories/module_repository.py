@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from uuid import UUID
 
-from app.domain.entities.module import Module
+from app.domain.entities import Module
 
 
 class ModuleRepository(ABC):

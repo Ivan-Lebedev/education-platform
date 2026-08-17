@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from uuid import UUID
 
-from app.domain.entities.section import Section
+from app.domain.entities import Section
 
 
 class SectionRepository(ABC):

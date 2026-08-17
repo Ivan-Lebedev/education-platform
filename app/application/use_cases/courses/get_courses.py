@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from app.application.interfaces.repositories.course_repository import CourseRepository
-from app.domain.entities.course import Course
+from app.domain.entities import Course
 
 
 @dataclass(slots=True)
