@@ -1,8 +1,8 @@
-from app.domain.entities.course import Course
-from app.domain.entities.lecture import Lecture
-from app.domain.entities.module import Module
-from app.domain.entities.section import Section
-from app.domain.entities.user import User
+from .course import Course
+from .lecture import Lecture
+from .module import Module
+from .section import Section
+from .user import User
 
 __all__ = [
     'Course',

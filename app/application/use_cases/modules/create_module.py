@@ -2,8 +2,7 @@ from dataclasses import dataclass
 from uuid import UUID, uuid4
 
 from app.application.exceptions import CourseNotFoundError
-from app.application.interfaces.repositories.course_repository import CourseRepository
-from app.application.interfaces.repositories.module_repository import ModuleRepository
+from app.application.interfaces.repositories import CourseRepository, ModuleRepository
 from app.domain.entities import Module
 
 

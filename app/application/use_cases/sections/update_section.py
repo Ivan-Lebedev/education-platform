@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from uuid import UUID
 
 from app.application.exceptions import SectionNotFoundError
-from app.application.interfaces.repositories.section_repository import SectionRepository
+from app.application.interfaces.repositories import SectionRepository
 from app.domain.entities.section import Section
 
 

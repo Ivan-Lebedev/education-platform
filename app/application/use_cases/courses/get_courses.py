@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from app.application.interfaces.repositories.course_repository import CourseRepository
+from app.application.interfaces.repositories import CourseRepository
 from app.domain.entities import Course
 
 

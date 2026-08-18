@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from uuid import UUID
 
 from app.application.exceptions import LectureNotFoundError
-from app.application.interfaces.repositories.lecture_repository import LectureRepository
+from app.application.interfaces.repositories import LectureRepository
 from app.domain.entities import Lecture
 
 

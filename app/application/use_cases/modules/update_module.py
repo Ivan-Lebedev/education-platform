@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from uuid import UUID
 
 from app.application.exceptions import ModuleNotFoundError
-from app.application.interfaces.repositories.module_repository import ModuleRepository
+from app.application.interfaces.repositories import ModuleRepository
 from app.domain.entities import Module
 
 
