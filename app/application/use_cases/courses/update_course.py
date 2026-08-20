@@ -8,12 +8,16 @@ from app.domain.entities import Course
 
 @dataclass(slots=True)
 class UpdateCourseCommand:
+    "Схема принимаемых данных для обновления курса."
+
     course_id: UUID
     title: str
     description: str
 
 
 class UpdateCourseUseCase:
+    "Сценарий обновления курса."
+
     def __init__(self, course_repository: CourseRepository) -> None:
         self.course_repository = course_repository
 

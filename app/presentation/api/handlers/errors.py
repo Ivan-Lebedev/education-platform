@@ -7,11 +7,15 @@ from app.presentation.api.schemas import ErrorResponse
 
 
 def build_error_response(error: str, message: str, status_code: int) -> JSONResponse:
+    "Конструктор для создания HTTP-ответов при возникновении внутренних ошибок системы."
+
     payload = ErrorResponse(error=error, message=message)
     return JSONResponse(status_code=status_code, content=payload.model_dump())
 
 
 async def domain_error_handler(request: Request, exc: Exception) -> JSONResponse:
+    "Обработчик ошибок доменного слоя."
+
     return build_error_response(
         error='domain_error',
         message=str(exc),
@@ -20,20 +24,31 @@ async def domain_error_handler(request: Request, exc: Exception) -> JSONResponse
 
 
 async def application_error_handler(request: Request, exc: Exception) -> JSONResponse:
+    "Обработчик ошибок слоя приложения."
+
     return build_error_response(
         error='application_error',
         message=str(exc),
         status_code=status.HTTP_400_BAD_REQUEST,
     )
 
+
 async def course_not_found_handler(request: Request, exc: Exception) -> JSONResponse:
+    "Обработчик ошибки, возникшей при отсутствии запрашиваемого курса."
+
     return build_error_response(
-        error="course_not_found",
+        error='course_not_found',
         message=str(exc),
         status_code=status.HTTP_404_NOT_FOUND,
     )
 
+
 def register_exception_handlers(app: FastAPI) -> None:
+    """
+    Функция для сопоставления возникающих внутренних ошибок системы с их обработчиками,
+    а также их регистрации в приложении.
+    """
+
     app.add_exception_handler(DomainError, domain_error_handler)
     app.add_exception_handler(ApplicationError, application_error_handler)
     app.add_exception_handler(CourseNotFoundError, course_not_found_handler)

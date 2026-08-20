@@ -6,7 +6,10 @@ from app.domain.exceptions import InvalidCourseError
 
 @dataclass(slots=True)
 class Course:
-    "Основная модель проекта, вокруг которой строится образовательная платформа."
+    """
+    Доменная сущность 'Курс' — основная модель проекта,
+    вокруг которой строится образовательная платформа.
+    """
 
     id: UUID
     title: str

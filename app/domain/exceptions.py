@@ -3,20 +3,20 @@ class DomainError(Exception):
 
 
 class InvalidCourseError(DomainError):
-    pass
+    "Общее исключение сущности 'Курс'."
 
 
 class InvalidModuleError(DomainError):
-    pass
+    "Общее исключение сущности 'Модуль'."
 
 
 class InvalidSectionError(DomainError):
-    pass
+    "Общее исключение сущности 'Раздел'."
 
 
 class InvalidLectureError(DomainError):
-    pass
+    "Общее исключение сущности 'Лекция'."
 
 
 class InvalidUserError(DomainError):
-    pass
+    "Общее исключение сущности 'Пользователь'."

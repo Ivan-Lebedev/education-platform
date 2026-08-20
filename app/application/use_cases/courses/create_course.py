@@ -7,11 +7,15 @@ from app.domain.entities import Course
 
 @dataclass(slots=True)
 class CreateCourseCommand:
+    "Схема принимаемых данных для создания курса."
+
     title: str
     description: str
 
 
 class CreateCourseUseCase:
+    "Сценарий создания курса."
+
     def __init__(self, course_repository: CourseRepository) -> None:
         self.course_repository = course_repository
 

@@ -13,7 +13,9 @@ class UserRole(StrEnum):
 
 @dataclass(slots=True)
 class User:
-    "Пользователь образовательной платформы."
+    """
+    Доменная сущность 'Пользователь'.
+    """
 
     id: UUID
     email: str

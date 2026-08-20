@@ -8,6 +8,8 @@ from app.domain.entities import Module
 
 @dataclass(slots=True)
 class CreateModuleCommand:
+    "Схема принимаемых данных для создания модуля."
+
     course_id: UUID
     title: str
     description: str
@@ -15,6 +17,8 @@ class CreateModuleCommand:
 
 
 class CreateModuleUseCase:
+    "Сценарий создания модуля."
+
     def __init__(
         self,
         course_repository: CourseRepository,

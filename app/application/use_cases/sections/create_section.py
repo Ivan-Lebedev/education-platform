@@ -8,6 +8,8 @@ from app.domain.entities import Section
 
 @dataclass(slots=True)
 class CreateSectionCommand:
+    "Схема принимаемых данных для создания раздела."
+
     module_id: UUID
     title: str
     description: str
@@ -15,6 +17,8 @@ class CreateSectionCommand:
 
 
 class CreateSectionUseCase:
+    "Сценарий создания раздела."
+
     def __init__(
         self,
         module_repository: ModuleRepository,

@@ -8,6 +8,8 @@ from app.domain.entities import Lecture
 
 @dataclass(slots=True)
 class UpdateLectureCommand:
+    "Схема принимаемых данных для обновления лекции."
+
     lecture_id: UUID
     title: str
     content: str
@@ -15,6 +17,8 @@ class UpdateLectureCommand:
 
 
 class UpdateLectureUseCase:
+    "Сценарий обновления лекции."
+
     def __init__(self, lecture_repository: LectureRepository) -> None:
         self.lecture_repository = lecture_repository
 

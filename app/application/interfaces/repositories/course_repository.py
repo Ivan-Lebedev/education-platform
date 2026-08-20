@@ -5,6 +5,8 @@ from app.domain.entities import Course
 
 
 class CourseRepository(ABC):
+    "Контракт репозитория для сущности 'Курс'."
+
     @abstractmethod
     async def get_by_id(self, course_id: UUID) -> Course | None:
         raise NotImplementedError

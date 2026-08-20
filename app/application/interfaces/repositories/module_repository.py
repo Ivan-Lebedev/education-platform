@@ -5,6 +5,8 @@ from app.domain.entities import Module
 
 
 class ModuleRepository(ABC):
+    "Контракт репозитория для сущности 'Модуль'."
+
     @abstractmethod
     async def get_by_id(self, module_id: UUID) -> Module | None:
         raise NotImplementedError

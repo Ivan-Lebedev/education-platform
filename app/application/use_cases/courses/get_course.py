@@ -8,10 +8,14 @@ from app.domain.entities import Course
 
 @dataclass(slots=True)
 class GetCourseQuery:
+    "Схема принимаемых данных для получения курса без вложенных сущностей."
+
     course_id: UUID
 
 
 class GetCourseUseCase:
+    "Сценарий получения курса без вложенных сущностей."
+
     def __init__(self, course_repository: CourseRepository) -> None:
         self.course_repository = course_repository
 

@@ -1,10 +1,12 @@
 from abc import ABC, abstractmethod
 from uuid import UUID
 
-from app.domain.entities.section import Section
+from app.domain.entities import Section
 
 
 class SectionRepository(ABC):
+    "Контракт репозитория для сущности 'Раздел'."
+
     @abstractmethod
     async def get_by_id(self, section_id: UUID) -> Section | None:
         raise NotImplementedError

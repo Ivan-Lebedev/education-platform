@@ -6,10 +6,12 @@ from app.domain.entities import Course
 
 @dataclass(slots=True)
 class GetCoursesQuery:
-    pass
+    "Схема принимаемых данных для получения курсов."
 
 
 class GetCoursesUseCase:
+    "Сценарий получения всех курсов без вложенных сущностей."
+
     def __init__(self, course_repository: CourseRepository) -> None:
         self.course_repository = course_repository
 

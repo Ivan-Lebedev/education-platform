@@ -8,6 +8,8 @@ from app.domain.entities import Lecture
 
 @dataclass(slots=True)
 class CreateLectureCommand:
+    "Схема принимаемых данных для создания лекции."
+
     section_id: UUID
     title: str
     content: str
@@ -15,6 +17,8 @@ class CreateLectureCommand:
 
 
 class CreateLectureUseCase:
+    "Сценарий создания лекции."
+
     def __init__(
         self,
         section_repository: SectionRepository,

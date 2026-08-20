@@ -3,16 +3,16 @@ class ApplicationError(Exception):
 
 
 class CourseNotFoundError(ApplicationError):
-    pass
+    "Исключение, возникающее при отсутствии запрашиваемого курса."
 
 
 class LectureNotFoundError(ApplicationError):
-    pass
+    "Исключение, возникающее при отсутствии запрашиваемой лекции."
 
 
 class ModuleNotFoundError(ApplicationError):
-    pass
+    "Исключение, возникающее при отсутствии запрашиваемого модуля."
 
 
 class SectionNotFoundError(ApplicationError):
-    pass
+    "Исключение, возникающее при отсутствии запрашиваемого раздела."
