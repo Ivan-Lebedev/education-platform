@@ -10,6 +10,8 @@ from .repositories import (
 
 
 class UnitOfWork(ABC):
+    "Контракт для объекта 'UnitOfWork'."
+
     courses: CourseRepository
     modules: ModuleRepository
     sections: SectionRepository
