@@ -1,5 +1,21 @@
-from app.presentation.api.schemas.errors import ErrorResponse
+from .content import (
+    CourseListItemResponse,
+    CourseResponse,
+    CourseStructureResponse,
+    LectureResponse,
+    LectureStructureResponse,
+    ModuleStructureResponse,
+    SectionStructureResponse,
+)
+from .errors import ErrorResponse
 
 __all__ = [
-    "ErrorResponse",
+    'CourseListItemResponse',
+    'CourseResponse',
+    'CourseStructureResponse',
+    'LectureResponse',
+    'LectureStructureResponse',
+    'ModuleStructureResponse',
+    'SectionStructureResponse',
+    'ErrorResponse',
 ]
