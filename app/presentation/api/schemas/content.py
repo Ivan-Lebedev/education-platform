@@ -43,6 +43,8 @@ class LectureResponse(LectureBaseResponse):
 
 
 class LectureStructureResponse(LectureBaseResponse):
+    "Схема данных для ответа при запросе структуры лекции."
+
     pass
 
 
@@ -58,6 +60,8 @@ class SectionBaseResponse(BaseModel):
 
 
 class SectionStructureResponse(SectionBaseResponse):
+    "Схема данных для ответа при запросе структуры раздела."
+
     lectures: list[LectureStructureResponse]
 
 
@@ -73,8 +77,12 @@ class ModuleBaseResponse(BaseModel):
 
 
 class ModuleStructureResponse(ModuleBaseResponse):
+    "Схема данных для ответа при запросе структуры модуля."
+
     sections: list[SectionStructureResponse]
 
 
 class CourseStructureResponse(CourseBaseResponse):
+    "Схема данных для ответа при запросе структуры курса."
+
     modules: list[ModuleStructureResponse]
