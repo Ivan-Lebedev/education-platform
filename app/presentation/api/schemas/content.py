@@ -20,7 +20,7 @@ class CourseListItemResponse(CourseBaseResponse):
 
 
 class CourseResponse(CourseBaseResponse):
-    "Схема данных для ответа при запросе единичного курса."
+    "Схема данных для ответа при запросе курса."
 
     pass
 
