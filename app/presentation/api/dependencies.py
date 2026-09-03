@@ -21,7 +21,7 @@ async def get_uow() -> AsyncIterator[SqlAlchemyUnitOfWork]:
 def get_get_courses_use_case(
     uow: SqlAlchemyUnitOfWork = Depends(get_uow),
 ) -> GetCoursesUseCase:
-    "Зависимость для получения списка курсов."
+    "Зависимость для получения сценария получения списка курсов."
 
     return GetCoursesUseCase(course_repository=uow.courses)
 
@@ -29,7 +29,7 @@ def get_get_courses_use_case(
 def get_get_course_use_case(
     uow: SqlAlchemyUnitOfWork = Depends(get_uow),
 ) -> GetCourseUseCase:
-    "Зависимость для получения курса."
+    "Зависимость для получения сценария получения курса."
 
     return GetCourseUseCase(course_repository=uow.courses)
 
@@ -37,7 +37,7 @@ def get_get_course_use_case(
 def get_get_course_structure_use_case(
     uow: SqlAlchemyUnitOfWork = Depends(get_uow),
 ) -> GetCourseStructureUseCase:
-    "Зависимость для получения структуры курса."
+    "Зависимость для получения сценария получения структуры курса."
 
     return GetCourseStructureUseCase(
         course_repository=uow.courses,
