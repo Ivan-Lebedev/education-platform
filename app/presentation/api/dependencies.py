@@ -12,7 +12,12 @@ from app.infrastructure.database import SessionFactory, SqlAlchemyUnitOfWork
 
 
 async def get_uow() -> AsyncIterator[SqlAlchemyUnitOfWork]:
-    "Зависимость для получения объекта 'UnitOfWork'."
+    """
+    Асинхронный генератор, создающий объект 'SqlAlchemyUnitOfWork' с фабрикой сессий.
+
+    Используется как вспомогательная зависимость для зависимостей получения
+    сценариев взаимодействия при обработке маршрутов через Depends (DI).
+    """
 
     async with SqlAlchemyUnitOfWork(session_factory=SessionFactory) as uow:
         yield uow
@@ -21,7 +26,7 @@ async def get_uow() -> AsyncIterator[SqlAlchemyUnitOfWork]:
 def get_get_courses_use_case(
     uow: SqlAlchemyUnitOfWork = Depends(get_uow),
 ) -> GetCoursesUseCase:
-    "Зависимость для получения сценария получения списка курсов."
+    "Провайдер зависимости, возвращающий сценарий получения списка курсов."
 
     return GetCoursesUseCase(course_repository=uow.courses)
 
@@ -29,7 +34,7 @@ def get_get_courses_use_case(
 def get_get_course_use_case(
     uow: SqlAlchemyUnitOfWork = Depends(get_uow),
 ) -> GetCourseUseCase:
-    "Зависимость для получения сценария получения курса."
+    "Провайдер зависимости, возвращающий сценарий получения курса."
 
     return GetCourseUseCase(course_repository=uow.courses)
 
@@ -37,7 +42,7 @@ def get_get_course_use_case(
 def get_get_course_structure_use_case(
     uow: SqlAlchemyUnitOfWork = Depends(get_uow),
 ) -> GetCourseStructureUseCase:
-    "Зависимость для получения сценария получения структуры курса."
+    "Провайдер зависимости, возвращающий сценарий получения полной структуры курса."
 
     return GetCourseStructureUseCase(
         course_repository=uow.courses,
@@ -50,6 +55,6 @@ def get_get_course_structure_use_case(
 def get_get_lecture_use_case(
     uow: SqlAlchemyUnitOfWork = Depends(get_uow),
 ) -> GetLectureUseCase:
-    "Зависимость для получения лекции."
+    "Провайдер зависимости, возвращающий сценарий получения лекции."
 
     return GetLectureUseCase(lecture_repository=uow.lectures)

@@ -83,6 +83,6 @@ class ModuleStructureResponse(ModuleBaseResponse):
 
 
 class CourseStructureResponse(CourseBaseResponse):
-    "Схема данных для ответа при запросе структуры курса."
+    "Схема данных для ответа при запросе полной структуры курса."
 
     modules: list[ModuleStructureResponse]

@@ -6,7 +6,7 @@ from app.domain.entities import Course
 
 @dataclass(slots=True)
 class GetCoursesQuery:
-    "Схема принимаемых данных для получения курсов."
+    "Схема принимаемых данных для получения всех курсов."
 
 
 class GetCoursesUseCase:
