@@ -15,7 +15,7 @@ class Section:
     title: str
     description: str = ''
     position: int = 1
-    lecture_ids: list[UUID] = field(default_factory=list)
+    lecture_ids: list[UUID] = field(default_factory=list[UUID])
 
     def __post_init__(self) -> None:
         self._validate()

@@ -7,8 +7,8 @@ from app.domain.exceptions import InvalidModuleError
 @dataclass(slots=True)
 class Module:
     """
-    Доменная сущность 'Модуль' — крупный блок внутри сущности 'Курс' для его разбиения
-    на понятные части, с которыми потом смогут работать интерфейс, use case-ы и логика прогресса.
+    Доменная сущность 'Модуль' — крупный блок внутри сущности 'Курс' для его разбиения на понятные
+    части, с которыми потом смогут работать интерфейс, сценарии взаимодействия и логика прогресса.
     """
 
     id: UUID
@@ -16,7 +16,7 @@ class Module:
     title: str
     description: str
     position: int
-    section_ids: list[UUID] = field(default_factory=list)
+    section_ids: list[UUID] = field(default_factory=list[UUID])
 
     def __post_init__(self) -> None:
         self._validate()

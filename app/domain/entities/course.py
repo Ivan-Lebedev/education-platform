@@ -14,7 +14,7 @@ class Course:
     id: UUID
     title: str
     description: str
-    module_ids: list[UUID] = field(default_factory=list)
+    module_ids: list[UUID] = field(default_factory=list[UUID])
 
     def __post_init__(self) -> None:
         self._validate()
