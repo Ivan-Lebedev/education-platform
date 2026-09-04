@@ -4,7 +4,7 @@ from pydantic import BaseModel, ConfigDict
 
 
 class CourseBaseResponse(BaseModel):
-    "Базовая схема данных для ответа при запросах курса."
+    "Базовая схема данных тела ответа при получении курса."
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -14,19 +14,15 @@ class CourseBaseResponse(BaseModel):
 
 
 class CourseListItemResponse(CourseBaseResponse):
-    "Схема данных для ответа при запросе списка курсов."
-
-    pass
+    "Схема данных тела ответа при получении списка курсов."
 
 
 class CourseResponse(CourseBaseResponse):
-    "Схема данных для ответа при запросе курса."
-
-    pass
+    "Схема данных тела ответа при получении курса."
 
 
 class LectureBaseResponse(BaseModel):
-    "Базовая схема данных для ответа при запросах лекции."
+    "Базовая схема данных тела ответа при получении лекции."
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -36,20 +32,18 @@ class LectureBaseResponse(BaseModel):
 
 
 class LectureResponse(LectureBaseResponse):
-    "Схема данных для ответа при запросе лекции."
+    "Схема данных тела ответа при получении лекции."
 
     content: str
     section_id: UUID
 
 
 class LectureStructureResponse(LectureBaseResponse):
-    "Схема данных для ответа при запросе структуры лекции."
-
-    pass
+    "Схема данных тела ответа при получении структуры лекции."
 
 
 class SectionBaseResponse(BaseModel):
-    "Базовая схема данных для ответа при запросах раздела."
+    "Базовая схема данных тела ответа при получении раздела."
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -60,13 +54,13 @@ class SectionBaseResponse(BaseModel):
 
 
 class SectionStructureResponse(SectionBaseResponse):
-    "Схема данных для ответа при запросе структуры раздела."
+    "Схема данных тела ответа при получении структуры раздела."
 
     lectures: list[LectureStructureResponse]
 
 
 class ModuleBaseResponse(BaseModel):
-    "Базовая схема данных для ответа при запросах модуля."
+    "Базовая схема данных тела ответа при получении модуля."
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -77,12 +71,12 @@ class ModuleBaseResponse(BaseModel):
 
 
 class ModuleStructureResponse(ModuleBaseResponse):
-    "Схема данных для ответа при запросе структуры модуля."
+    "Схема данных тела ответа при получении структуры модуля."
 
     sections: list[SectionStructureResponse]
 
 
 class CourseStructureResponse(CourseBaseResponse):
-    "Схема данных для ответа при запросе полной структуры курса."
+    "Схема данных тела ответа при получении полной структуры курса."
 
     modules: list[ModuleStructureResponse]
