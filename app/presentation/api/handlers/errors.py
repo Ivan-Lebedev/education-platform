@@ -1,7 +1,13 @@
 from fastapi import FastAPI, Request, status
 from fastapi.responses import JSONResponse
 
-from app.application.exceptions import ApplicationError, CourseNotFoundError
+from app.application.exceptions import (
+    ApplicationError,
+    CourseNotFoundError,
+    LectureNotFoundError,
+    ModuleNotFoundError,
+    SectionNotFoundError,
+)
 from app.domain.exceptions import DomainError
 from app.presentation.api.schemas import ErrorResponse
 
@@ -43,6 +49,36 @@ async def course_not_found_handler(request: Request, exc: Exception) -> JSONResp
     )
 
 
+async def module_not_found_handler(request: Request, exc: Exception) -> JSONResponse:
+    "Обработчик ошибки, возникшей при отсутствии запрашиваемого модуля курса."
+
+    return build_error_response(
+        error='module_not_found',
+        message=str(exc),
+        status_code=status.HTTP_404_NOT_FOUND,
+    )
+
+
+async def section_not_found_handler(request: Request, exc: Exception) -> JSONResponse:
+    "Обработчик ошибки, возникшей при отсутствии запрашиваемого раздела модуля курса."
+
+    return build_error_response(
+        error='section_not_found',
+        message=str(exc),
+        status_code=status.HTTP_404_NOT_FOUND,
+    )
+
+
+async def lecture_not_found_handler(request: Request, exc: Exception) -> JSONResponse:
+    "Обработчик ошибки, возникшей при отсутствии запрашиваемого лекции из раздела модуля курса."
+
+    return build_error_response(
+        error='lecture_not_found',
+        message=str(exc),
+        status_code=status.HTTP_404_NOT_FOUND,
+    )
+
+
 def register_exception_handlers(app: FastAPI) -> None:
     """
     Функция для сопоставления возникающих внутренних ошибок системы с их обработчиками,
@@ -52,3 +88,6 @@ def register_exception_handlers(app: FastAPI) -> None:
     app.add_exception_handler(DomainError, domain_error_handler)
     app.add_exception_handler(ApplicationError, application_error_handler)
     app.add_exception_handler(CourseNotFoundError, course_not_found_handler)
+    app.add_exception_handler(ModuleNotFoundError, module_not_found_handler)
+    app.add_exception_handler(SectionNotFoundError, section_not_found_handler)
+    app.add_exception_handler(LectureNotFoundError, lecture_not_found_handler)
