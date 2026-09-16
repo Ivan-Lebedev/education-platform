@@ -8,13 +8,13 @@ from app.domain.entities import Lecture
 
 @dataclass(slots=True)
 class GetLectureQuery:
-    "Схема принимаемых данных для получения лекции."
+    "Схема принимаемых данных для получения сущности 'Лекция'."
 
     lecture_id: UUID
 
 
 class GetLectureUseCase:
-    "Сценарий получения лекции."
+    "Сценарий получения сущности 'Лекция'."
 
     def __init__(self, lecture_repository: LectureRepository) -> None:
         self.lecture_repository = lecture_repository

@@ -8,7 +8,7 @@ from app.domain.entities import Module
 
 @dataclass(slots=True)
 class UpdateModuleCommand:
-    "Схема принимаемых данных для обновления модуля."
+    "Схема принимаемых данных для обновления сущности 'Модуль'."
 
     module_id: UUID
     title: str
@@ -17,7 +17,7 @@ class UpdateModuleCommand:
 
 
 class UpdateModuleUseCase:
-    "Сценарий обновления модуля."
+    "Сценарий обновления сущности 'Модуль'."
 
     def __init__(self, uow: UnitOfWork) -> None:
         self.uow = uow

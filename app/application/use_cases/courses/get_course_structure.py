@@ -18,13 +18,13 @@ from app.application.interfaces.repositories import (
 
 @dataclass(slots=True)
 class GetCourseStructureQuery:
-    "Схема принимаемых данных для получения курса со всеми вложенными сущностями."
+    "Схема принимаемых данных для получения сущности 'Курс' с его вложенными сущностями."
 
     course_id: UUID
 
 
 class GetCourseStructureUseCase:
-    "Сценарий получения курса со всеми вложенными сущностями."
+    "Сценарий получения сущности 'Курс' с его вложенными сущностями."
 
     def __init__(
         self,

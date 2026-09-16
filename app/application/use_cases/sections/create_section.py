@@ -8,7 +8,7 @@ from app.domain.entities import Section
 
 @dataclass(slots=True)
 class CreateSectionCommand:
-    "Схема принимаемых данных для создания раздела."
+    "Схема принимаемых данных для создания сущности 'Раздел'."
 
     module_id: UUID
     title: str
@@ -17,7 +17,7 @@ class CreateSectionCommand:
 
 
 class CreateSectionUseCase:
-    "Сценарий создания раздела."
+    "Сценарий создания сущности 'Раздел'."
 
     def __init__(self, uow: UnitOfWork) -> None:
         self.uow = uow

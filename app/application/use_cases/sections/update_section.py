@@ -8,7 +8,7 @@ from app.domain.entities.section import Section
 
 @dataclass(slots=True)
 class UpdateSectionCommand:
-    "Схема принимаемых данных для обновления раздела."
+    "Схема принимаемых данных для обновления сущности 'Раздел'."
 
     section_id: UUID
     title: str
@@ -17,7 +17,7 @@ class UpdateSectionCommand:
 
 
 class UpdateSectionUseCase:
-    "Сценарий обновления раздела."
+    "Сценарий обновления сущности 'Раздел'."
 
     def __init__(self, uow: UnitOfWork) -> None:
         self.uow = uow

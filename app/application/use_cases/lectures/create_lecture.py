@@ -8,7 +8,7 @@ from app.domain.entities import Lecture
 
 @dataclass(slots=True)
 class CreateLectureCommand:
-    "Схема принимаемых данных для создания лекции."
+    "Схема принимаемых данных для создания сущности 'Лекция'."
 
     section_id: UUID
     title: str
@@ -17,7 +17,7 @@ class CreateLectureCommand:
 
 
 class CreateLectureUseCase:
-    "Сценарий создания лекции."
+    "Сценарий создания сущности 'Лекция'."
 
     def __init__(self, uow: UnitOfWork) -> None:
         self.uow = uow

@@ -8,10 +8,12 @@ class CourseModel(Base):
     """
     SQLAlchemy-модель сущности 'Курс'.
 
-    Атрибуты — название (тип): Описание:
-        id (str): УИН экземпляра;
-        title (str): Название курса;
+    Attributes:
+        id (str): УИН экземпляра.
+        title (str): Название курса.
         description (str): Описание курса.
+
+        modules (List[ModuleModel]): Связь 1:N. Модули, входящие в курс.
     """
 
     __tablename__ = 'courses'

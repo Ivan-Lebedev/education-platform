@@ -8,7 +8,7 @@ from app.domain.entities import Lecture
 
 @dataclass(slots=True)
 class UpdateLectureCommand:
-    "Схема принимаемых данных для обновления лекции."
+    "Схема принимаемых данных для обновления сущности 'Лекция'."
 
     lecture_id: UUID
     title: str
@@ -17,7 +17,7 @@ class UpdateLectureCommand:
 
 
 class UpdateLectureUseCase:
-    "Сценарий обновления лекции."
+    "Сценарий обновления сущности 'Лекция'."
 
     def __init__(self, uow: UnitOfWork) -> None:
         self.uow = uow

@@ -8,16 +8,15 @@ class ModuleModel(Base):
     """
     SQLAlchemy-модель сущности 'Модуль'.
 
-    Атрибуты — название (тип): Описание:
-        id (str): УИН экземпляра;
-        course_id (str): УИН экземпляра курса, в который входит модуль;
-        title (str): Название модуля;
-        description (str): Описание модуля;
+    Attributes:
+        id (str): УИН экземпляра.
+        course_id (str): УИН экземпляра курса, в который входит модуль.
+        title (str): Название модуля.
+        description (str): Описание модуля.
         position (int): Позиционный номер модуля в составе курса.
 
-    Связи — название (Модель): Описание:
-        course (CourseModel): Курс, в который входит модуль (N:1);
-        sections (SectionModel): Разделы, которые входят в модуль (1:N).
+        course (CourseModel): Связь N:1. Курс, в который входит модуль.
+        sections (List[SectionModel]): Связь 1:N. Разделы, которые входят в модуль.
     """
 
     __tablename__ = 'modules'

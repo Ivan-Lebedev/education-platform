@@ -8,16 +8,15 @@ class SectionModel(Base):
     """
     SQLAlchemy-модель сущности 'Раздел'.
 
-    Атрибуты — название (тип): Описание:
-        id (str): УИН экземпляра;
-        module_id (str): УИН экземпляра модуля, в который входит раздел;
-        title (str): Название раздела;
-        description (str): Описание раздела;
+    Attributes:
+        id (str): УИН экземпляра.
+        module_id (str): УИН экземпляра модуля, в который входит раздел.
+        title (str): Название раздела.
+        description (str): Описание раздела.
         position (int): Позиционный номер раздела в составе модуля.
 
-    Связи — название (Модель): Описание:
-        module (ModuleModel): Модуль, в который входит раздел (N:1);
-        lectures (LectureModel): Лекции, которые входят в раздел (1:N).
+        module (ModuleModel): Связь N:1. Модуль, в который входит раздел.
+        lectures (List[LectureModel]): Связь 1:N. Лекции, которые входят в раздел.
     """
 
     __tablename__ = 'sections'
