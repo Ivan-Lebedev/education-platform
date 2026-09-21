@@ -6,11 +6,14 @@ from app.domain.entities import Course
 
 @dataclass(slots=True)
 class GetCoursesQuery:
-    "Схема принимаемых данных для получения всех сущностей 'Курс' без его вложенных сущностей."
+    """
+    Схема принимаемых данных для получения всех экземпляров
+    сущности 'Курс' без его вложенных сущностей.
+    """
 
 
 class GetCoursesUseCase:
-    "Сценарий получения всех сущностей 'Курс' без его вложенных сущностей."
+    "Сценарий получения всех экземпляров сущности 'Курс' без его вложенных сущностей."
 
     def __init__(self, course_repository: CourseRepository) -> None:
         self.course_repository = course_repository

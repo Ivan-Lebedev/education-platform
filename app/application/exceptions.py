@@ -16,3 +16,14 @@ class ModuleNotFoundError(ApplicationError):
 
 class SectionNotFoundError(ApplicationError):
     "Исключение, возникающее при отсутствии запрашиваемого раздела."
+
+
+class UserAlreadyExistsError(ApplicationError):
+    """
+    Исключение, возникающее при попытке создания пользователя
+    с учетными данными, уже имеющимися в БД.
+    """
+
+
+class InvalidCredentialsError(ApplicationError):
+    pass
