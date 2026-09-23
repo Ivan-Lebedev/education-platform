@@ -11,7 +11,10 @@ from app.infrastructure.database.models.section_model import SectionModel
 
 
 class SqlAlchemySectionRepository(SectionRepository):
-    "Реализация контракта сущности 'Раздел' в виде SQLAlchemy-репозитория для взаимодействия с БД."
+    """
+    Реализация контракта репозитория сущности 'Раздел'
+    в виде SQLAlchemy-репозитория для взаимодействия с БД.
+    """
 
     def __init__(self, session: AsyncSession) -> None:
         self.session = session

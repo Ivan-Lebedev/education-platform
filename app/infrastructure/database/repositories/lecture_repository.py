@@ -10,7 +10,10 @@ from app.infrastructure.database.models.lecture_model import LectureModel
 
 
 class SqlAlchemyLectureRepository(LectureRepository):
-    "Реализация контракта сущности 'Лекция' в виде SQLAlchemy-репозитория для взаимодействия с БД."
+    """
+    Реализация контракта репозитория сущности 'Лекция'
+    в виде SQLAlchemy-репозитория для взаимодействия с БД.
+    """
 
     def __init__(self, session: AsyncSession) -> None:
         self.session = session

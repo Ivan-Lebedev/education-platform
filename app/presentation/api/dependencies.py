@@ -2,6 +2,7 @@ from collections.abc import AsyncIterator
 
 from fastapi import Depends
 
+from app.application.interfaces.services import PasswordHasher
 from app.application.use_cases import (
     CreateCourseUseCase,
     CreateLectureUseCase,
@@ -11,12 +12,14 @@ from app.application.use_cases import (
     GetCoursesUseCase,
     GetCourseUseCase,
     GetLectureUseCase,
+    RegisterUserUseCase,
     UpdateCourseUseCase,
     UpdateLectureUseCase,
     UpdateModuleUseCase,
     UpdateSectionUseCase,
 )
 from app.infrastructure.database import SessionFactory, SqlAlchemyUnitOfWork
+from app.infrastructure.security.password_hasher import PwdlibPasswordHasher
 
 
 async def get_uow() -> AsyncIterator[SqlAlchemyUnitOfWork]:
@@ -108,3 +111,17 @@ def get_update_lecture_use_case() -> UpdateLectureUseCase:
     "Провайдер зависимости, возвращающий сценарий обновления лекции из раздела модуля курса."
 
     return UpdateLectureUseCase(uow=SqlAlchemyUnitOfWork(session_factory=SessionFactory))
+
+
+def get_password_hasher() -> PasswordHasher:
+    "Провайдер зависимости, возвращающий сервис по работе с хешами паролей."
+    return PwdlibPasswordHasher()
+
+
+def get_register_user_use_case() -> RegisterUserUseCase:
+    "Провайдер зависимости, возвращающий сценарий регистрации пользователя."
+
+    return RegisterUserUseCase(
+        uow=SqlAlchemyUnitOfWork(session_factory=SessionFactory),
+        password_hasher=get_password_hasher(),
+    )

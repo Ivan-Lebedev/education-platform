@@ -11,7 +11,10 @@ from app.infrastructure.database.models import CourseModel
 
 
 class SqlAlchemyCourseRepository(CourseRepository):
-    "Реализация контракта сущности 'Курс' в виде SQLAlchemy-репозитория для взаимодействия с БД."
+    """
+    Реализация контракта репозитория сущности 'Курс'
+    в виде SQLAlchemy-репозитория для взаимодействия с БД.
+    """
 
     def __init__(self, session: AsyncSession) -> None:
         self.session = session

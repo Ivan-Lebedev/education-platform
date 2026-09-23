@@ -11,7 +11,10 @@ from app.infrastructure.database.models import ModuleModel
 
 
 class SqlAlchemyModuleRepository(ModuleRepository):
-    "Реализация контракта сущности 'Модуль' в виде SQLAlchemy-репозитория для взаимодействия с БД."
+    """
+    Реализация контракта репозитория сущности 'Модуль'
+    в виде SQLAlchemy-репозитория для взаимодействия с БД.
+    """
 
     def __init__(self, session: AsyncSession) -> None:
         self.session = session
