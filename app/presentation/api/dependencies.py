@@ -12,6 +12,7 @@ from app.application.use_cases import (
     GetCoursesUseCase,
     GetCourseUseCase,
     GetLectureUseCase,
+    LoginUserUseCase,
     RegisterUserUseCase,
     UpdateCourseUseCase,
     UpdateLectureUseCase,
@@ -122,6 +123,15 @@ def get_register_user_use_case() -> RegisterUserUseCase:
     "Провайдер зависимости, возвращающий сценарий регистрации пользователя."
 
     return RegisterUserUseCase(
+        uow=SqlAlchemyUnitOfWork(session_factory=SessionFactory),
+        password_hasher=get_password_hasher(),
+    )
+
+
+def get_login_user_use_case() -> LoginUserUseCase:
+    "Провайдер зависимости, возвращающий сценарий логина пользователя."
+
+    return LoginUserUseCase(
         uow=SqlAlchemyUnitOfWork(session_factory=SessionFactory),
         password_hasher=get_password_hasher(),
     )

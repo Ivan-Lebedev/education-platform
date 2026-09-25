@@ -1,3 +1,4 @@
+from .auth.login_user import LoginUserUseCase
 from .auth.register_user import RegisterUserUseCase
 from .courses.create_course import CreateCourseCommand, CreateCourseUseCase
 from .courses.get_course import GetCourseQuery, GetCourseUseCase
@@ -13,6 +14,7 @@ from .sections.create_section import CreateSectionCommand, CreateSectionUseCase
 from .sections.update_section import UpdateSectionCommand, UpdateSectionUseCase
 
 __all__ = [
+    'LoginUserUseCase',
     'RegisterUserUseCase',
     'CreateCourseCommand',
     'CreateCourseUseCase',

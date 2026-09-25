@@ -26,4 +26,4 @@ class UserAlreadyExistsError(ApplicationError):
 
 
 class InvalidCredentialsError(ApplicationError):
-    pass
+    "Исключение, возникающее при предоставлении неверных учетных данных."

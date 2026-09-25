@@ -15,7 +15,7 @@ class SectionStructureDTO:
     title: str
     description: str
     position: int
-    lectures: list[LectureStructureDTO] = field(default_factory=list)
+    lectures: list[LectureStructureDTO] = field(default_factory=list[LectureStructureDTO])
 
 
 @dataclass(slots=True)
@@ -24,7 +24,7 @@ class ModuleStructureDTO:
     title: str
     description: str
     position: int
-    sections: list[SectionStructureDTO] = field(default_factory=list)
+    sections: list[SectionStructureDTO] = field(default_factory=list[SectionStructureDTO])
 
 
 @dataclass(slots=True)
@@ -32,4 +32,4 @@ class CourseStructureDTO:
     id: UUID
     title: str
     description: str
-    modules: list[ModuleStructureDTO] = field(default_factory=list)
+    modules: list[ModuleStructureDTO] = field(default_factory=list[ModuleStructureDTO])
