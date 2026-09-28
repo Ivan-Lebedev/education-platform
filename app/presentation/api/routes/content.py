@@ -35,7 +35,7 @@ router = APIRouter(tags=['Content'])
 async def get_courses(
     use_case: GetCoursesUseCase = Depends(get_get_courses_use_case),
 ) -> list[CourseListItemResponse]:
-    "Маршрут для получения списка курсов."
+    "Получение списка курсов."
 
     result = await use_case.execute(GetCoursesQuery())
     return [CourseListItemResponse.model_validate(course) for course in result]
@@ -57,7 +57,7 @@ async def get_course(
     course_id: UUID,
     use_case: GetCourseUseCase = Depends(get_get_course_use_case),
 ) -> CourseResponse:
-    "Маршрут для получения курса."
+    "Получение курса."
 
     result = await use_case.execute(GetCourseQuery(course_id=course_id))
     return CourseResponse.model_validate(result)
@@ -82,7 +82,7 @@ async def get_course_structure(
     course_id: UUID,
     use_case: GetCourseStructureUseCase = Depends(get_get_course_structure_use_case),
 ) -> CourseStructureResponse:
-    "Маршрут для получения полной структуры курса."
+    "Получение полной структуры курса."
 
     result = await use_case.execute(GetCourseStructureQuery(course_id=course_id))
     return CourseStructureResponse.model_validate(result)
@@ -104,7 +104,7 @@ async def get_lecture(
     lecture_id: UUID,
     use_case: GetLectureUseCase = Depends(get_get_lecture_use_case),
 ) -> LectureResponse:
-    "Маршрут для получения лекции."
+    "Получение лекции."
 
     result = await use_case.execute(GetLectureQuery(lecture_id=lecture_id))
     return LectureResponse.model_validate(result)

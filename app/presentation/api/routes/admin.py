@@ -69,7 +69,7 @@ async def create_course(
     request: CreateCourseRequest,
     use_case: CreateCourseUseCase = Depends(get_create_course_use_case),
 ) -> CourseResponse:
-    "Маршрут для создания курса."
+    "Создание курса."
 
     result = await use_case.execute(
         CreateCourseCommand(title=request.title, description=request.description)
@@ -101,7 +101,7 @@ async def update_course(
     request: UpdateCourseRequest,
     use_case: UpdateCourseUseCase = Depends(get_update_course_use_case),
 ) -> CourseResponse:
-    "Маршрут для обновления курса."
+    "Обновление курса."
 
     result = await use_case.execute(
         UpdateCourseCommand(
@@ -138,7 +138,7 @@ async def create_module(
     request: CreateModuleRequest,
     use_case: CreateModuleUseCase = Depends(get_create_module_use_case),
 ) -> ModuleResponse:
-    "Маршрут для создания модуля курса."
+    "Создание модуля курса."
 
     result = await use_case.execute(
         CreateModuleCommand(
@@ -175,7 +175,7 @@ async def update_module(
     request: UpdateModuleRequest,
     use_case: UpdateModuleUseCase = Depends(get_update_module_use_case),
 ) -> ModuleResponse:
-    "Маршрут для обновления модуля курса."
+    "Обновление модуля курса."
 
     result = await use_case.execute(
         UpdateModuleCommand(
@@ -213,7 +213,7 @@ async def create_section(
     request: CreateSectionRequest,
     use_case: CreateSectionUseCase = Depends(get_create_section_use_case),
 ) -> SectionResponse:
-    "Маршрут для создания раздела модуля курса."
+    "Создание раздела модуля курса."
 
     result = await use_case.execute(
         CreateSectionCommand(
@@ -250,7 +250,7 @@ async def update_section(
     request: UpdateSectionRequest,
     use_case: UpdateSectionUseCase = Depends(get_update_section_use_case),
 ) -> SectionResponse:
-    "Маршрут для обновления раздела модуля курса."
+    "Обновление раздела модуля курса."
 
     result = await use_case.execute(
         UpdateSectionCommand(
@@ -288,7 +288,7 @@ async def create_lecture(
     request: CreateLectureRequest,
     use_case: CreateLectureUseCase = Depends(get_create_lecture_use_case),
 ) -> LectureResponse:
-    "Маршрут для создания лекции из раздела модуля курса."
+    "Создание лекции из раздела модуля курса."
 
     result = await use_case.execute(
         CreateLectureCommand(
@@ -325,7 +325,7 @@ async def update_lecture(
     request: UpdateLectureRequest,
     use_case: UpdateLectureUseCase = Depends(get_update_lecture_use_case),
 ) -> LectureResponse:
-    "Маршрут для обновления лекции из раздела модуля курса."
+    "Обновление лекции из раздела модуля курса."
 
     result = await use_case.execute(
         UpdateLectureCommand(

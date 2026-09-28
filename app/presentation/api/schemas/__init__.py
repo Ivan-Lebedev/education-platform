@@ -1,3 +1,4 @@
+from .auth import LoginRequest, RegisteredUserResponse, RegisterUserRequest, TokenResponse
 from .content import (
     CourseListItemResponse,
     CourseResponse,
@@ -22,6 +23,10 @@ from .sections import (
 )
 
 __all__ = [
+    'LoginRequest',
+    'RegisteredUserResponse',
+    'RegisterUserRequest',
+    'TokenResponse',
     'CourseListItemResponse',
     'CourseResponse',
     'CourseStructureResponse',

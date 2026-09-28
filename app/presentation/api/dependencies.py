@@ -3,6 +3,7 @@ from collections.abc import AsyncIterator
 from fastapi import Depends
 
 from app.application.interfaces.services import PasswordHasher
+from app.application.interfaces.services.token_service import TokenService
 from app.application.use_cases import (
     CreateCourseUseCase,
     CreateLectureUseCase,
@@ -20,6 +21,7 @@ from app.application.use_cases import (
     UpdateSectionUseCase,
 )
 from app.infrastructure.database import SessionFactory, SqlAlchemyUnitOfWork
+from app.infrastructure.security.jwt_token_service import JwtTokenService
 from app.infrastructure.security.password_hasher import PwdlibPasswordHasher
 
 
@@ -116,7 +118,14 @@ def get_update_lecture_use_case() -> UpdateLectureUseCase:
 
 def get_password_hasher() -> PasswordHasher:
     "Провайдер зависимости, возвращающий сервис по работе с хешами паролей."
+
     return PwdlibPasswordHasher()
+
+
+def get_token_service() -> TokenService:
+    "Провайдер зависимости, возвращающий сервис по работе с JWT."
+
+    return JwtTokenService()
 
 
 def get_register_user_use_case() -> RegisterUserUseCase:
@@ -134,4 +143,5 @@ def get_login_user_use_case() -> LoginUserUseCase:
     return LoginUserUseCase(
         uow=SqlAlchemyUnitOfWork(session_factory=SessionFactory),
         password_hasher=get_password_hasher(),
+        token_service=get_token_service(),
     )
