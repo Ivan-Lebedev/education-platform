@@ -25,7 +25,7 @@ from app.domain.entities import User
 from app.infrastructure.database import SessionFactory, SqlAlchemyUnitOfWork
 from app.infrastructure.security.jwt_token_service import InvalidTokenError, JwtTokenService
 from app.infrastructure.security.password_hasher import PwdlibPasswordHasher
-from app.presentation.exceptions import AuthenticationError
+from app.presentation.exceptions import AuthenticationError, PermissionDeniedError
 
 
 async def get_uow() -> AsyncIterator[SqlAlchemyUnitOfWork]:
@@ -161,7 +161,30 @@ async def get_current_user(
     uow: SqlAlchemyUnitOfWork = Depends(get_uow),
     token_service: TokenService = Depends(get_token_service),
 ) -> User:
-    "Провайдер зависимости, возвращающий экземпляр пользователя, выполнившего запрос."
+    """
+    Провайдер зависимости для получения аутентифицированного пользователя из JWT-токена.
+
+    Используется в защищённых маршрутах для проверки аутентификации пользователя,
+    отправившего запрос.
+
+    Извлекает Bearer-токен из заголовка запроса, валидирует его через сервис токенов,
+    извлекает идентификатор пользователя и загружает экземпляр пользователя из БД.
+
+    Args:
+        credentials (HTTPAuthorizationCredentials | None): Учётные данные из заголовка
+            Authorization. Извлекаются через HTTPBearer. Могут отсутствовать, если
+            заголовок не передан.
+        uow (SqlAlchemyUnitOfWork): Unit of Work для доступа к репозиториям.
+        token_service (TokenService): Сервис для валидации и декодирования JWT-токенов.
+
+    Returns:
+        User: Экземпляр аутентифицированного пользователя.
+
+    Raises:
+        AuthenticationError: Если учётные данные отсутствуют, схема аутентификации
+            не является Bearer, токен невалиден или истёк, либо пользователь
+            с идентификатором из токена не найден в БД.
+    """
 
     if credentials is None:
         raise AuthenticationError('Authentication credentials were not provided.')
@@ -179,3 +202,36 @@ async def get_current_user(
         raise AuthenticationError('User from token was not found.')
 
     return user
+
+
+async def get_current_admin(
+    current_user: User = Depends(get_current_user),
+) -> User:
+    """
+    Провайдер зависимости для получения аутентифицированного
+    пользователя-администратора из JWT-токена.
+
+    Расширяет провайдер `get_current_user`, добавляя проверку прав администратора.
+    Используется в защищённых маршрутах, доступных только администраторам.
+
+    Сначала выполняется аутентификация через `get_current_user` (извлечение и валидация
+    JWT-токена, извлечение пользователя, отправившего запрос, из БД),
+    затем проверяется наличие прав администратора у пользователя.
+
+    Args:
+        current_user (User): Аутентифицированный пользователь, полученный через
+            провайдер `get_current_user`.
+
+    Returns:
+        User: Экземпляр аутентифицированного пользователя с правами администратора.
+
+    Raises:
+        AuthenticationError: Если учётные данные отсутствуют, токен невалиден
+            или пользователь не найден (наследуется от `get_current_user`).
+        PermissionDeniedError: Если пользователь аутентифицирован, но не имеет
+            прав администратора.
+    """
+
+    if not current_user.can_manage_platform():
+        raise PermissionDeniedError('Admin access is required.')
+    return current_user
