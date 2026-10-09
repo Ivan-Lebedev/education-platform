@@ -102,10 +102,10 @@ async def app(session_factory: async_sessionmaker[AsyncSession]) -> AsyncIterato
     После завершения теста восстанавливает оригинальную фабрику.
 
     Args:
-        session_factory: Тестовая фабрика сессий.
+        session_factory: Тестовая фабрика асинхронных сессий.
 
     Yields:
-        AsyncIterator[FastAPI]: Тестовое приложение FastAPI.
+        FastAPI: Тестовое приложение FastAPI.
     """
 
     app = create_app()
@@ -147,7 +147,7 @@ async def clear_database(session_factory: async_sessionmaker[AsyncSession]) -> N
     для соблюдения ссылочной целостности) и гарантирует запуск каждого теста в чистой БД.
 
     Args:
-        session_factory: Тестовая фабрика сессий.
+        session_factory: Тестовая фабрика асинхронных сессий.
     """
 
     async with session_factory() as session:
@@ -165,7 +165,7 @@ async def seeded_course_tree(session_factory: async_sessionmaker[AsyncSession]) 
     и ожидаемые значения в компактном виде через SimpleNamespace.
 
     Args:
-        session_factory: Тестовая фабрика сессий.
+        session_factory: Тестовая фабрика асинхронных сессий.
 
     Returns:
         SimpleNamespace: Объект с идентификаторами и значениями созданного дерева.
@@ -225,7 +225,7 @@ async def seeded_student_user(session_factory: async_sessionmaker[AsyncSession])
     с production-кодом аутентификации.
 
     Args:
-        session_factory: Тестовая фабрика сессий.
+        session_factory: Тестовая фабрика асинхронных сессий.
 
     Returns:
         UserModel: Созданная ORM-модель пользователя.
@@ -254,7 +254,7 @@ async def seeded_admin_user(session_factory: async_sessionmaker[AsyncSession]) -
     с production-кодом аутентификации.
 
     Args:
-        session_factory: Тестовая фабрика сессий.
+        session_factory: Тестовая фабрика асинхронных сессий.
 
     Returns:
         UserModel: Созданная ORM-модель пользователя.
