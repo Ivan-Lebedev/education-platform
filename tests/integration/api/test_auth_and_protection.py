@@ -3,7 +3,7 @@ from httpx import AsyncClient
 from app.infrastructure.database.models.user_model import UserModel
 
 
-async def test_register_creates_student_user(client: AsyncClient):
+async def test_register_creates_student_user(client: AsyncClient) -> None:
     """
     Сценарий успешной регистрации пользователя.
 
@@ -24,21 +24,15 @@ async def test_register_creates_student_user(client: AsyncClient):
     assert payload['role'] == 'student'
 
 
-async def test_register_returns_400_when_user_already_exists(client: AsyncClient):
+async def test_register_returns_400_when_user_already_exists(
+    client: AsyncClient, seeded_student_user: UserModel
+) -> None:
     """
     Сценарий регистрации при наличии пользователя с указанным email.
 
-    Проверяет, что маршрут возвращает статус-код 400 с ошибкой 'application_error'
+    Проверяет, что маршрут возвращает статус-код 400 с ожидаемой ошибкой
     при попытке создать пользователя с уже существующим email.
     """
-
-    await client.post(
-        '/api/auth/register',
-        json={
-            'email': 'student@example.com',
-            'password': 'strongpassword123',
-        },
-    )
 
     response = await client.post(
         '/api/auth/register',
@@ -53,7 +47,9 @@ async def test_register_returns_400_when_user_already_exists(client: AsyncClient
     assert payload['error'] == 'application_error'
 
 
-async def test_login_returns_access_token(client: AsyncClient, seeded_student_user: UserModel):
+async def test_login_returns_access_token(
+    client: AsyncClient, seeded_student_user: UserModel
+) -> None:
     """
     Сценарий успешного входа в систему пользователя.
 
@@ -74,11 +70,11 @@ async def test_login_returns_access_token(client: AsyncClient, seeded_student_us
     assert 'access_token' in payload
 
 
-async def test_login_returns_400_for_invalid_credentials(client: AsyncClient):
+async def test_login_returns_400_for_invalid_credentials(client: AsyncClient) -> None:
     """
     Сценарий входа с недействительными учётными данными.
 
-    Проверяет, что маршрут возвращает статус-код 400 с ошибкой 'application_error'
+    Проверяет, что маршрут возвращает статус-код 400 с ожидаемой ошибкой
     при попытке войти с несуществующим email или неверным паролем.
     """
 
@@ -98,7 +94,7 @@ async def test_login_returns_400_for_invalid_credentials(client: AsyncClient):
 async def test_auth_me_returns_current_user(
     client: AsyncClient,
     student_auth_headers: dict[str, str],
-):
+) -> None:
     """
     Сценарий получения данных текущего аутентифицированного пользователя.
 
@@ -118,7 +114,7 @@ async def test_admin_route_returns_401_without_token(client: AsyncClient):
     """
     Сценарий доступа к административному маршруту без токена.
 
-    Проверяет, что маршрут возвращает статус-код 401 с ошибкой 'authentication_error'
+    Проверяет, что маршрут возвращает статус-код 401 с ожидаемой ошибкой
     при запросе без заголовка Authorization.
     """
 
@@ -138,11 +134,11 @@ async def test_admin_route_returns_401_without_token(client: AsyncClient):
 async def test_admin_route_returns_403_for_student(
     client: AsyncClient,
     student_auth_headers: dict[str, str],
-):
+) -> None:
     """
     Сценарий доступа к административному маршруту пользователя без прав администратора.
 
-    Проверяет, что маршрут возвращает статус-код 403 с ошибкой 'permission_denied'
+    Проверяет, что маршрут возвращает статус-код 403 с ожидаемой ошибкой
     при запросе пользователя без прав администратора.
     """
 
@@ -162,7 +158,7 @@ async def test_admin_route_returns_403_for_student(
 
 async def test_admin_route_allows_admin_user(
     client: AsyncClient, admin_auth_headers: dict[str, str]
-):
+) -> None:
     """
     Сценарий успешного создания курса администратором.
 
