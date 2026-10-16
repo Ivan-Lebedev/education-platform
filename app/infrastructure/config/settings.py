@@ -5,17 +5,46 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class ApiSettings(BaseModel):
+    """
+    Конфигурационные параметры API-приложения.
+
+    Attributes:
+        title (str): Название приложения.
+        debug (bool): Режим отладки приложения.
+        prefix (str): Префикс для пути к api.
+    """
+
     title: str
     debug: bool
     prefix: str
 
 
 class DatabaseSettings(BaseModel):
+    """
+    Конфигурационные параметры БД.
+
+    Attributes:
+        url (str): Адрес для подключения к БД.
+        echo (bool): Вывод логов операций БД в консоль.
+    """
+
     url: str
     echo: bool
 
 
 class JwtSettings(BaseModel):
+    """
+    Конфигурационные параметры для настройки JWT.
+
+    Attributes:
+        secret_key (str): Секретный ключ для подписи и проверки токена.
+        algorithm (str): Алгоритм подписи токена.
+        access_token_expire_minutes (int): Время жизни access-токена в минутах.
+
+    Note:
+        Для генерации надёжного ключа можно применить команду: 'openssl rand -hex 32'
+    """
+
     secret_key: str
     algorithm: str
     access_token_expire_minutes: int

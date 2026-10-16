@@ -6,6 +6,8 @@ from app.domain.exceptions import InvalidUserError
 
 
 class UserRole(StrEnum):
+    "Варианты значений поля role сущности 'Пользователь'."
+
     STUDENT = 'student'
     AUTHOR = 'author'
     ADMIN = 'admin'
@@ -13,9 +15,7 @@ class UserRole(StrEnum):
 
 @dataclass(slots=True)
 class User:
-    """
-    Доменная сущность 'Пользователь'.
-    """
+    "Доменная сущность 'Пользователь'."
 
     id: UUID
     email: str

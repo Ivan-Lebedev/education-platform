@@ -8,14 +8,14 @@ from app.application.interfaces.unit_of_work import UnitOfWork
 
 @dataclass(slots=True)
 class LoginUserCommand:
-    "Схема принимаемых данных для логина экземпляра сущности 'Пользователь'."
+    "Схема принимаемых данных для входа в систему."
 
     email: str
     password: str
 
 
 class LoginUserUseCase:
-    "Сценарий логина экземпляра сущности 'Пользователь'."
+    "Сценарий входа в систему."
 
     def __init__(
         self,

@@ -9,18 +9,18 @@ class UserRepository(ABC):
 
     @abstractmethod
     async def get_by_id(self, user_id: UUID) -> User | None:
-        "Метод получения экземпляра пользователя по УИН при регистрации и логине."
+        "Получение экземпляра пользователя по УИН при регистрации и входе в систему."
 
         raise NotImplementedError
 
     @abstractmethod
     async def get_by_email(self, email: str) -> User | None:
-        "Метод для извлечения экземпляра пользователя из bearer токена по электронной почте."
+        "Извлечение экземпляра пользователя из bearer токена по электронной почте."
 
         raise NotImplementedError
 
     @abstractmethod
     async def add(self, user: User) -> None:
-        "Метод для сохранения нового пользователя."
+        "Добавление нового пользователя."
 
         raise NotImplementedError

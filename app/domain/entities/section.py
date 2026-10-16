@@ -6,9 +6,7 @@ from app.domain.exceptions import InvalidSectionError
 
 @dataclass(slots=True)
 class Section:
-    """
-    Доменная сущность 'Раздел' — блок внутри сущности 'Модуль', отвечающий за 1 смысловую часть.
-    """
+    "Доменная сущность 'Раздел' — блок внутри сущности 'Модуль', отвечающий за 1 смысловую часть."
 
     id: UUID
     module_id: UUID

@@ -6,6 +6,5 @@ settings = get_settings()
 engine = create_async_engine(
     settings.database.url,
     echo=settings.database.echo,
-    future=True,
 )
 SessionFactory = async_sessionmaker(bind=engine, expire_on_commit=False)

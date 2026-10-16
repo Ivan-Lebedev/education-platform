@@ -37,6 +37,8 @@ class TokenResponse(BaseModel):
 
 
 class CurrentUserResponse(BaseModel):
+    "Схема данных тела ответа при получении информации о профиле пользователя."
+
     model_config = ConfigDict(from_attributes=True)
 
     id: UUID

@@ -6,9 +6,7 @@ from app.domain.exceptions import InvalidLectureError
 
 @dataclass(slots=True)
 class Lecture:
-    """
-    Доменная сущность 'Лекция' — хранит учебное содержание сущности 'Раздел'.
-    """
+    "Доменная сущность 'Лекция' — хранит учебное содержание сущности 'Раздел'."
 
     id: UUID
     section_id: UUID
