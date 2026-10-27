@@ -6,6 +6,7 @@ from .courses.get_course_structure import GetCourseStructureQuery, GetCourseStru
 from .courses.get_courses import GetCoursesQuery, GetCoursesUseCase
 from .courses.update_course import UpdateCourseCommand, UpdateCourseUseCase
 from .lectures.create_lecture import CreateLectureCommand, CreateLectureUseCase
+from .lectures.delete_lecture import DeleteLectureCommand, DeleteLectureUseCase
 from .lectures.get_lecture import GetLectureQuery, GetLectureUseCase
 from .lectures.update_lecture import UpdateLectureCommand, UpdateLectureUseCase
 from .modules.create_module import CreateModuleCommand, CreateModuleUseCase
@@ -30,6 +31,8 @@ __all__ = [
     'UpdateCourseUseCase',
     'CreateLectureCommand',
     'CreateLectureUseCase',
+    'DeleteLectureCommand',
+    'DeleteLectureUseCase',
     'GetLectureQuery',
     'GetLectureUseCase',
     'UpdateLectureCommand',

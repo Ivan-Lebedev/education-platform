@@ -10,6 +10,7 @@ from app.application.use_cases import (
     CreateLectureUseCase,
     CreateModuleUseCase,
     CreateSectionUseCase,
+    DeleteLectureUseCase,
     GetCourseStructureUseCase,
     GetCoursesUseCase,
     GetCourseUseCase,
@@ -111,6 +112,12 @@ def get_create_lecture_use_case() -> CreateLectureUseCase:
     "Провайдер зависимости, возвращающий сценарий создания лекции из раздела модуля курса."
 
     return CreateLectureUseCase(uow=SqlAlchemyUnitOfWork(session_factory=SessionFactory))
+
+
+def get_delete_lecture_use_case() -> DeleteLectureUseCase:
+    "Провайдер зависимости, возвращающий сценарий удаления лекции из раздела модуля курса."
+
+    return DeleteLectureUseCase(uow=SqlAlchemyUnitOfWork(session_factory=SessionFactory))
 
 
 def get_update_lecture_use_case() -> UpdateLectureUseCase:
