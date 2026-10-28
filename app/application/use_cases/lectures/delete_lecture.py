@@ -25,6 +25,8 @@ class DeleteLectureUseCase:
                 raise LectureNotFoundError('Lecture not found.')
 
             section = await self.uow.sections.get_by_id(lecture.section_id)
-            section.lecture_ids.remove(lecture.id)
-            await self.uow.lectures.remove(command.lecture_id)
+            if section:
+                section.remove_lecture(command.lecture_id)
+                await self.uow.sections.update(section)
+            await self.uow.lectures.delete(command.lecture_id)
             await self.uow.commit()

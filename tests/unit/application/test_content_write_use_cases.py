@@ -17,6 +17,8 @@ from app.application.use_cases import (
     CreateModuleUseCase,
     CreateSectionCommand,
     CreateSectionUseCase,
+    DeleteLectureCommand,
+    DeleteLectureUseCase,
     UpdateCourseCommand,
     UpdateCourseUseCase,
     UpdateLectureCommand,
@@ -95,6 +97,9 @@ class FakeLectureRepository:
 
     async def update(self, lecture) -> None:
         self.items[lecture.id] = lecture
+
+    async def delete(self, lecture_id) -> None:
+        del self.items[lecture_id]
 
 
 class FakeUnitOfWork:
@@ -412,3 +417,30 @@ async def test_update_lecture_raises_not_found_when_lecture_is_missing() -> None
                 position=2,
             )
         )
+
+
+async def test_delete_lecture_existing_lecture() -> None:
+    uow = FakeUnitOfWork()
+    use_case = DeleteLectureUseCase(uow=uow)
+
+    lecture = Lecture(
+        id=uuid4(),
+        section_id=uuid4(),
+        title='Lecture 1',
+        content='Full lecture content',
+        position=1,
+    )
+    await uow.lectures.add(lecture)
+
+    await use_case.execute(DeleteLectureCommand(lecture_id=lecture.id))
+    assert lecture.id not in uow.lectures.items
+    assert uow.committed is True
+    assert uow.rolled_back is False
+
+
+async def test_delete_lecture_raises_not_found_when_lecture_is_missing() -> None:
+    uow = FakeUnitOfWork()
+    use_case = DeleteLectureUseCase(uow=uow)
+
+    with pytest.raises(LectureNotFoundError):
+        await use_case.execute(DeleteLectureCommand(lecture_id=uuid4()))

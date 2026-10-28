@@ -42,7 +42,7 @@ class SqlAlchemyLectureRepository(LectureRepository):
         model.position = lecture.position
         await self.session.flush()
 
-    async def remove(self, lecture_id: UUID) -> None:
+    async def delete(self, lecture_id: UUID) -> None:
         model = await self.session.get(LectureModel, str(lecture_id))
         if model is None:
             return

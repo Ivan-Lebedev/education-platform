@@ -1,8 +1,13 @@
 import pytest
+from httpx import AsyncClient
+
+from app.infrastructure.database.models import UserModel
 
 
 @pytest.mark.asyncio
-async def test_mvp_flow_from_login_to_public_read(client, seeded_admin_user):
+async def test_mvp_flow_from_login_to_public_read(
+    client: AsyncClient, seeded_admin_user: UserModel
+):
     # Вход администратора в систему.
     login_response = await client.post(
         '/api/auth/login',
@@ -76,3 +81,14 @@ async def test_mvp_flow_from_login_to_public_read(client, seeded_admin_user):
     lecture_read_response = await client.get(f'/api/lectures/{lecture_id}')
     assert lecture_read_response.status_code == 200
     assert lecture_read_response.json()['content'] == 'Lecture content'
+    # Удаление лекции.
+    lecture_delete_response = await client.delete(
+        f'/api/admin/lectures/{lecture_id}',
+        headers=headers,
+    )
+    assert lecture_delete_response.status_code == 204
+    # Проверка удаления лекции из перечня лекций раздела.
+    structure_without_lection_response = await client.get(f'/api/courses/{course_id}/structure')
+    assert structure_without_lection_response.status_code == 200
+    structure_without_lection_payload = structure_without_lection_response.json()
+    assert len(structure_without_lection_payload['modules'][0]['sections'][0]['lectures']) == 0

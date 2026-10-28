@@ -24,5 +24,5 @@ class LectureRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def remove(self, lecture_id: UUID) -> None:
+    async def delete(self, lecture_id: UUID) -> None:
         raise NotImplementedError
