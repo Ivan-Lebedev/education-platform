@@ -13,6 +13,8 @@ from app.application.use_cases import (
     CreateSectionUseCase,
     DeleteLectureCommand,
     DeleteLectureUseCase,
+    DeleteSectionCommand,
+    DeleteSectionUseCase,
     UpdateCourseCommand,
     UpdateCourseUseCase,
     UpdateLectureCommand,
@@ -29,6 +31,7 @@ from app.presentation.api.dependencies import (
     get_create_section_use_case,
     get_current_admin,
     get_delete_lecture_use_case,
+    get_delete_section_use_case,
     get_update_course_use_case,
     get_update_lecture_use_case,
     get_update_module_use_case,
@@ -279,6 +282,27 @@ async def update_section(
         )
     )
     return SectionResponse.model_validate(result)
+
+
+@router.delete(
+    '/sections/{section_id}',
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary='Delete section',
+    description=('Deletes an existing section by its identifier.'),
+    responses={
+        404: {
+            'description': 'Section was not found.',
+            'model': ErrorResponse,
+        },
+    },
+)
+async def delete_section(
+    section_id: UUID,
+    use_case: DeleteSectionUseCase = Depends(get_delete_section_use_case),
+) -> None:
+    "Удаление раздела из модуля курса."
+
+    await use_case.execute(DeleteSectionCommand(section_id=section_id))
 
 
 @router.post(

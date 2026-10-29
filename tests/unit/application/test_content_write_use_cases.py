@@ -19,6 +19,8 @@ from app.application.use_cases import (
     CreateSectionUseCase,
     DeleteLectureCommand,
     DeleteLectureUseCase,
+    DeleteSectionCommand,
+    DeleteSectionUseCase,
     UpdateCourseCommand,
     UpdateCourseUseCase,
     UpdateLectureCommand,
@@ -80,6 +82,9 @@ class FakeSectionRepository:
 
     async def update(self, section) -> None:
         self.items[section.id] = section
+
+    async def delete(self, section_id) -> None:
+        del self.items[section_id]
 
 
 class FakeLectureRepository:
@@ -334,6 +339,42 @@ async def test_update_section_raises_not_found_when_section_is_missing() -> None
                 position=2,
             )
         )
+
+
+async def test_delete_section_existing_section() -> None:
+    uow = FakeUnitOfWork()
+    use_case = DeleteSectionUseCase(uow=uow)
+
+    section = Section(
+        id=uuid4(),
+        module_id=uuid4(),
+        title='Section 1',
+        description='',
+        position=1,
+    )
+    await uow.sections.add(section)
+    lecture = Lecture(
+        id=uuid4(),
+        section_id=section.id,
+        title='Lecture 1',
+        content='Full lecture content',
+        position=1,
+    )
+    await uow.sections.add(lecture)
+
+    await use_case.execute(DeleteSectionCommand(section.id))
+    assert section.id not in uow.sections.items
+    assert lecture.id not in uow.lectures.items
+    assert uow.committed is True
+    assert uow.rolled_back is False
+
+
+async def test_delete_section_raises_not_found_when_section_is_missing() -> None:
+    uow = FakeUnitOfWork()
+    use_case = DeleteSectionUseCase(uow=uow)
+
+    with pytest.raises(SectionNotFoundError):
+        await use_case.execute(DeleteSectionCommand(section_id=uuid4()))
 
 
 async def test_create_lecture_adds_lecture_to_section_and_commits() -> None:

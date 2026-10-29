@@ -12,6 +12,7 @@ from .lectures.update_lecture import UpdateLectureCommand, UpdateLectureUseCase
 from .modules.create_module import CreateModuleCommand, CreateModuleUseCase
 from .modules.update_module import UpdateModuleCommand, UpdateModuleUseCase
 from .sections.create_section import CreateSectionCommand, CreateSectionUseCase
+from .sections.delete_section import DeleteSectionCommand, DeleteSectionUseCase
 from .sections.update_section import UpdateSectionCommand, UpdateSectionUseCase
 
 __all__ = [
@@ -43,6 +44,8 @@ __all__ = [
     'UpdateModuleUseCase',
     'CreateSectionCommand',
     'CreateSectionUseCase',
+    'DeleteSectionCommand',
+    'DeleteSectionUseCase',
     'UpdateSectionCommand',
     'UpdateSectionUseCase',
 ]
