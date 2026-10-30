@@ -28,8 +28,10 @@ class DeleteSectionUseCase:
             if module:
                 module.remove_section(command.section_id)
                 await self.uow.modules.update(module)
-            lectures = await self.uow.lectures.get_by_ids(section.lecture_ids)
-            for lecture in lectures:
-                await self.uow.lectures.delete(lecture.id)
+
             await self.uow.sections.delete(command.section_id)
+
+            for lecture_id in section.lecture_ids:  # TODO: подумать над проверкой существования.
+                await self.uow.lectures.delete(lecture_id)
+
             await self.uow.commit()

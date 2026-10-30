@@ -6,8 +6,9 @@ from sqlalchemy.orm import selectinload
 
 from app.application.interfaces.repositories.section_repository import SectionRepository
 from app.domain.entities.section import Section
-from app.infrastructure.database.mappers.section_mapper import SectionMapper
-from app.infrastructure.database.models.section_model import SectionModel
+from app.infrastructure.database.mappers import SectionMapper
+from app.infrastructure.database.models import LectureModel, SectionModel
+from app.infrastructure.database.repositories.utils import sync_children
 
 
 class SqlAlchemySectionRepository(SectionRepository):
@@ -51,6 +52,12 @@ class SqlAlchemySectionRepository(SectionRepository):
         model.title = section.title
         model.description = section.description
         model.position = section.position
+        await sync_children(
+            session=self.session,
+            child_model=LectureModel,
+            current_children=model.lectures,
+            new_children_ids=section.lecture_ids,
+        )
         await self.session.flush()
 
     async def delete(self, section_id: UUID) -> None:

@@ -345,9 +345,17 @@ async def test_delete_section_existing_section() -> None:
     uow = FakeUnitOfWork()
     use_case = DeleteSectionUseCase(uow=uow)
 
+    module = Module(
+        id=uuid4(),
+        course_id=uuid4(),
+        title='MVP stage',
+        description='Content, users and access.',
+        position=1,
+    )
+    await uow.modules.add(module)
     section = Section(
         id=uuid4(),
-        module_id=uuid4(),
+        module_id=module.id,
         title='Section 1',
         description='',
         position=1,
@@ -364,6 +372,7 @@ async def test_delete_section_existing_section() -> None:
 
     await use_case.execute(DeleteSectionCommand(section.id))
     assert section.id not in uow.sections.items
+    assert section.id not in uow.modules.items[section.module_id].section_ids
     assert lecture.id not in uow.lectures.items
     assert uow.committed is True
     assert uow.rolled_back is False
@@ -464,9 +473,18 @@ async def test_delete_lecture_existing_lecture() -> None:
     uow = FakeUnitOfWork()
     use_case = DeleteLectureUseCase(uow=uow)
 
+    section = Section(
+        id=uuid4(),
+        module_id=uuid4(),
+        title='Section 1',
+        description='',
+        position=1,
+    )
+    await uow.sections.add(section)
+
     lecture = Lecture(
         id=uuid4(),
-        section_id=uuid4(),
+        section_id=section.id,
         title='Lecture 1',
         content='Full lecture content',
         position=1,
@@ -475,6 +493,7 @@ async def test_delete_lecture_existing_lecture() -> None:
 
     await use_case.execute(DeleteLectureCommand(lecture_id=lecture.id))
     assert lecture.id not in uow.lectures.items
+    assert lecture.id not in uow.sections.items[lecture.section_id].lecture_ids
     assert uow.committed is True
     assert uow.rolled_back is False
 

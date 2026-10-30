@@ -11,6 +11,7 @@ from app.application.use_cases import (
     CreateModuleUseCase,
     CreateSectionUseCase,
     DeleteLectureUseCase,
+    DeleteModuleUseCase,
     DeleteSectionUseCase,
     GetCourseStructureUseCase,
     GetCoursesUseCase,
@@ -95,6 +96,12 @@ def get_update_module_use_case() -> UpdateModuleUseCase:
     "Провайдер зависимости, возвращающий сценарий обновления модуля курса."
 
     return UpdateModuleUseCase(uow=SqlAlchemyUnitOfWork(session_factory=SessionFactory))
+
+
+def get_delete_module_use_case() -> DeleteModuleUseCase:
+    "Провайдер зависимости, возвращающий сценарий удаления модуля из курса."
+
+    return DeleteModuleUseCase(uow=SqlAlchemyUnitOfWork(session_factory=SessionFactory))
 
 
 def get_create_section_use_case() -> CreateSectionUseCase:

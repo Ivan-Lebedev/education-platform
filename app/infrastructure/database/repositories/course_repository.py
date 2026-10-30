@@ -7,7 +7,8 @@ from sqlalchemy.orm import selectinload
 from app.application.interfaces.repositories import CourseRepository
 from app.domain.entities import Course
 from app.infrastructure.database.mappers import CourseMapper
-from app.infrastructure.database.models import CourseModel
+from app.infrastructure.database.models import CourseModel, ModuleModel
+from app.infrastructure.database.repositories.utils import sync_children
 
 
 class SqlAlchemyCourseRepository(CourseRepository):
@@ -44,4 +45,10 @@ class SqlAlchemyCourseRepository(CourseRepository):
             return
         model.title = course.title
         model.description = course.description
+        await sync_children(
+            session=self.session,
+            child_model=ModuleModel,
+            current_children=model.modules,
+            new_children_ids=course.module_ids,
+        )
         await self.session.flush()

@@ -7,7 +7,8 @@ from sqlalchemy.orm import selectinload
 from app.application.interfaces.repositories import ModuleRepository
 from app.domain.entities import Module
 from app.infrastructure.database.mappers import ModuleMapper
-from app.infrastructure.database.models import ModuleModel
+from app.infrastructure.database.models import ModuleModel, SectionModel
+from app.infrastructure.database.repositories.utils import sync_children
 
 
 class SqlAlchemyModuleRepository(ModuleRepository):
@@ -51,4 +52,17 @@ class SqlAlchemyModuleRepository(ModuleRepository):
         model.title = module.title
         model.description = module.description
         model.position = module.position
+        await sync_children(
+            session=self.session,
+            child_model=SectionModel,
+            current_children=model.sections,
+            new_children_ids=module.section_ids,
+        )
+        await self.session.flush()
+
+    async def delete(self, module_id: UUID) -> None:
+        model = await self.session.get(ModuleModel, str(module_id))
+        if model is None:
+            return
+        await self.session.delete(model)
         await self.session.flush()
