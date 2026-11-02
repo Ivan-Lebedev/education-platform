@@ -3,6 +3,7 @@ from uuid import UUID
 
 from app.application.exceptions import SectionNotFoundError
 from app.application.interfaces.unit_of_work import UnitOfWork
+from app.application.use_cases.utils import delete_section_lectures
 
 
 @dataclass(slots=True)
@@ -24,8 +25,7 @@ class DeleteSectionUseCase:
             if section is None:
                 raise SectionNotFoundError('Section not found.')
 
-            for lecture_id in section.lecture_ids:
-                await self.uow.lectures.delete(lecture_id)
+            await delete_section_lectures(section=section, uow=self.uow)
 
             await self.uow.sections.delete(command.section_id)
 

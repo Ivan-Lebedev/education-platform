@@ -11,6 +11,8 @@ from app.application.use_cases import (
     CreateModuleUseCase,
     CreateSectionCommand,
     CreateSectionUseCase,
+    DeleteCourseCommand,
+    DeleteCourseUseCase,
     DeleteLectureCommand,
     DeleteLectureUseCase,
     DeleteModuleCommand,
@@ -32,6 +34,7 @@ from app.presentation.api.dependencies import (
     get_create_module_use_case,
     get_create_section_use_case,
     get_current_admin,
+    get_delete_course_use_case,
     get_delete_lecture_use_case,
     get_delete_module_use_case,
     get_delete_section_use_case,
@@ -137,6 +140,27 @@ async def update_course(
     return CourseResponse.model_validate(result)
 
 
+@router.delete(
+    '/courses/{course_id}',
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary='Delete course',
+    description=('Deletes an existing course by its identifier.'),
+    responses={
+        404: {
+            'description': 'Course was not found.',
+            'model': ErrorResponse,
+        },
+    },
+)
+async def delete_course(
+    course_id: UUID,
+    use_case: DeleteCourseUseCase = Depends(get_delete_course_use_case),
+) -> None:
+    "Удаление курса с его входящим содержимым."
+
+    await use_case.execute(DeleteCourseCommand(course_id=course_id))
+
+
 @router.post(
     '/courses/{course_id}/modules',
     response_model=ModuleResponse,
@@ -228,7 +252,7 @@ async def delete_module(
     module_id: UUID,
     use_case: DeleteModuleUseCase = Depends(get_delete_module_use_case),
 ) -> None:
-    "Удаление модуля из курса."
+    "Удаление модуля с его входящим содержимым из курса."
 
     await use_case.execute(DeleteModuleCommand(module_id=module_id))
 
@@ -324,7 +348,7 @@ async def delete_section(
     section_id: UUID,
     use_case: DeleteSectionUseCase = Depends(get_delete_section_use_case),
 ) -> None:
-    "Удаление раздела из модуля курса."
+    "Удаление раздела с его входящим содержимым из модуля курса."
 
     await use_case.execute(DeleteSectionCommand(section_id=section_id))
 

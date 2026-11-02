@@ -46,9 +46,15 @@ class SqlAlchemyModuleRepository(ModuleRepository):
         await self.session.flush()
 
     async def update(self, module: Module) -> None:
-        model = await self.session.get(ModuleModel, str(module.id))
+        stmt = (
+            select(ModuleModel)
+            .options(selectinload(ModuleModel.sections))
+            .where(ModuleModel.id == str(module.id))
+        )
+        model = (await self.session.execute(stmt)).scalar_one_or_none()
         if model is None:
             return
+
         model.title = module.title
         model.description = module.description
         model.position = module.position

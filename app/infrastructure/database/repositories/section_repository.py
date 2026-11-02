@@ -46,9 +46,15 @@ class SqlAlchemySectionRepository(SectionRepository):
         await self.session.flush()
 
     async def update(self, section: Section) -> None:
-        model = await self.session.get(SectionModel, str(section.id))
+        stmt = (
+            select(SectionModel)
+            .options(selectinload(SectionModel.lectures))
+            .where(SectionModel.id == str(section.id))
+        )
+        model = (await self.session.execute(stmt)).scalar_one_or_none()
         if model is None:
             return
+
         model.title = section.title
         model.description = section.description
         model.position = section.position

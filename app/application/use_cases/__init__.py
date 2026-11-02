@@ -1,6 +1,7 @@
 from .auth.login_user import LoginUserCommand, LoginUserUseCase
 from .auth.register_user import RegisterUserCommand, RegisterUserUseCase
 from .courses.create_course import CreateCourseCommand, CreateCourseUseCase
+from .courses.delete_course import DeleteCourseCommand, DeleteCourseUseCase
 from .courses.get_course import GetCourseQuery, GetCourseUseCase
 from .courses.get_course_structure import GetCourseStructureQuery, GetCourseStructureUseCase
 from .courses.get_courses import GetCoursesQuery, GetCoursesUseCase
@@ -23,6 +24,8 @@ __all__ = [
     'RegisterUserUseCase',
     'CreateCourseCommand',
     'CreateCourseUseCase',
+    'DeleteCourseCommand',
+    'DeleteCourseUseCase',
     'GetCourseQuery',
     'GetCourseUseCase',
     'GetCourseStructureQuery',

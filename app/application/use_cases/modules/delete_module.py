@@ -3,14 +3,19 @@ from uuid import UUID
 
 from app.application.exceptions import ModuleNotFoundError
 from app.application.interfaces.unit_of_work import UnitOfWork
+from app.application.use_cases.utils import delete_module_sections
 
 
 @dataclass(slots=True)
 class DeleteModuleCommand:
+    "Схема принимаемых данных для удаления сущности 'Модуль'."
+
     module_id: UUID
 
 
 class DeleteModuleUseCase:
+    "Сценарий удаления сущности 'Модуль'."
+
     def __init__(self, uow: UnitOfWork) -> None:
         self.uow = uow
 
@@ -20,12 +25,7 @@ class DeleteModuleUseCase:
             if module is None:
                 raise ModuleNotFoundError('Module not found.')
 
-            for section_id in module.section_ids:
-                section = await self.uow.sections.get_by_id(section_id)
-                if section is not None:
-                    for lecture_id in section.lecture_ids:
-                        await self.uow.lectures.delete(lecture_id)
-                    await self.uow.sections.delete(section_id)
+            await delete_module_sections(module=module, uow=self.uow)
 
             await self.uow.modules.delete(command.module_id)
 
@@ -33,3 +33,5 @@ class DeleteModuleUseCase:
             if course is not None:
                 course.remove_module(command.module_id)
                 await self.uow.courses.update(course)
+
+            await self.uow.commit()

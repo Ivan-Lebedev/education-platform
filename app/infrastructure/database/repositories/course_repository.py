@@ -40,9 +40,15 @@ class SqlAlchemyCourseRepository(CourseRepository):
         await self.session.flush()
 
     async def update(self, course: Course) -> None:
-        model = await self.session.get(CourseModel, str(course.id))
+        stmt = (
+            select(CourseModel)
+            .options(selectinload(CourseModel.modules))
+            .where(CourseModel.id == str(course.id))
+        )
+        model = (await self.session.execute(stmt)).scalar_one_or_none()
         if model is None:
             return
+
         model.title = course.title
         model.description = course.description
         await sync_children(
@@ -51,4 +57,11 @@ class SqlAlchemyCourseRepository(CourseRepository):
             current_children=model.modules,
             new_children_ids=course.module_ids,
         )
+        await self.session.flush()
+
+    async def delete(self, course_id: UUID):
+        model = await self.session.get(CourseModel, str(course_id))
+        if model is None:
+            return
+        await self.session.delete(model)
         await self.session.flush()
