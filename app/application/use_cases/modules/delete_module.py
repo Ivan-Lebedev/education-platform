@@ -20,13 +20,16 @@ class DeleteModuleUseCase:
             if module is None:
                 raise ModuleNotFoundError('Module not found.')
 
+            for section_id in module.section_ids:
+                section = await self.uow.sections.get_by_id(section_id)
+                if section is not None:
+                    for lecture_id in section.lecture_ids:
+                        await self.uow.lectures.delete(lecture_id)
+                    await self.uow.sections.delete(section_id)
+
+            await self.uow.modules.delete(command.module_id)
+
             course = await self.uow.courses.get_by_id(module.course_id)
             if course is not None:
                 course.remove_module(command.module_id)
                 await self.uow.courses.update(course)
-
-            await self.uow.modules.delete(command.module_id)
-
-            for section_id in module.section_ids:  # TODO: подумать над проверкой существования.
-                await self.uow.sections.delete(section_id)
-                # TODO: удаление связных сущностей.

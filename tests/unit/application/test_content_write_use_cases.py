@@ -19,6 +19,8 @@ from app.application.use_cases import (
     CreateSectionUseCase,
     DeleteLectureCommand,
     DeleteLectureUseCase,
+    DeleteModuleCommand,
+    DeleteModuleUseCase,
     DeleteSectionCommand,
     DeleteSectionUseCase,
     UpdateCourseCommand,
@@ -65,6 +67,9 @@ class FakeModuleRepository:
 
     async def update(self, module) -> None:
         self.items[module.id] = module
+
+    async def delete(self, module_ids) -> None:
+        del self.items[module_ids]
 
 
 class FakeSectionRepository:
@@ -258,6 +263,61 @@ async def test_update_module_raises_not_found_when_module_is_missing() -> None:
         )
 
 
+async def test_delete_module_existing_module() -> None:
+    uow = FakeUnitOfWork()
+    use_case = DeleteModuleUseCase(uow=uow)
+
+    course = Course(
+        id=uuid4(),
+        title='FastAPI course',
+        description='Clean architecture in practice.',
+    )
+    await uow.courses.add(course)
+    module = Module(
+        id=uuid4(),
+        course_id=course.id,
+        title='MVP stage',
+        description='Content, users and access.',
+        position=1,
+    )
+    await uow.modules.add(module)
+    section = Section(
+        id=uuid4(),
+        module_id=module.id,
+        title='Section 1',
+        description='',
+        position=1,
+    )
+    await uow.sections.add(section)
+    lecture = Lecture(
+        id=uuid4(),
+        section_id=section.id,
+        title='Lecture 1',
+        content='Full lecture content',
+        position=1,
+    )
+    await uow.sections.add(lecture)
+
+    await use_case.execute(DeleteModuleCommand(module.id))
+
+    assert module.id not in uow.modules.items
+    for section_id in module.section_ids:
+        assert section_id not in uow.sections.items
+        for lecture_id in uow.sections.items[section_id]:
+            assert lecture_id not in uow.lectures.items
+    assert module.id not in uow.courses.items[module.course_id].module_ids
+
+
+async def test_delete_module_raises_not_found_when_module_is_missing() -> None:
+    uow = FakeUnitOfWork()
+    use_case = DeleteModuleUseCase(uow=uow)
+
+    with pytest.raises(ModuleNotFoundError):
+        await use_case.execute(DeleteModuleCommand(module_id=uuid4()))
+    assert uow.committed is False
+    assert uow.rolled_back is True
+
+
 async def test_create_section_adds_section_to_module_and_commits() -> None:
     uow = FakeUnitOfWork()
     module = Module(
@@ -384,6 +444,8 @@ async def test_delete_section_raises_not_found_when_section_is_missing() -> None
 
     with pytest.raises(SectionNotFoundError):
         await use_case.execute(DeleteSectionCommand(section_id=uuid4()))
+    assert uow.committed is False
+    assert uow.rolled_back is True
 
 
 async def test_create_lecture_adds_lecture_to_section_and_commits() -> None:
@@ -504,3 +566,5 @@ async def test_delete_lecture_raises_not_found_when_lecture_is_missing() -> None
 
     with pytest.raises(LectureNotFoundError):
         await use_case.execute(DeleteLectureCommand(lecture_id=uuid4()))
+    assert uow.committed is False
+    assert uow.rolled_back is True

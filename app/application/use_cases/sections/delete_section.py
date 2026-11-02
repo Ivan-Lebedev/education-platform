@@ -24,14 +24,14 @@ class DeleteSectionUseCase:
             if section is None:
                 raise SectionNotFoundError('Section not found.')
 
+            for lecture_id in section.lecture_ids:
+                await self.uow.lectures.delete(lecture_id)
+
+            await self.uow.sections.delete(command.section_id)
+
             module = await self.uow.modules.get_by_id(section.module_id)
             if module:
                 module.remove_section(command.section_id)
                 await self.uow.modules.update(module)
-
-            await self.uow.sections.delete(command.section_id)
-
-            for lecture_id in section.lecture_ids:  # TODO: подумать над проверкой существования.
-                await self.uow.lectures.delete(lecture_id)
 
             await self.uow.commit()
