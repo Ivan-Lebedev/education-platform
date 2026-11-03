@@ -27,6 +27,6 @@ class DeleteCourseUseCase:
 
             await delete_course_modules(course, self.uow)
 
-            await self.uow.courses.delete(command.course_id)
+            await self.uow.courses.remove(command.course_id)
 
             await self.uow.commit()

@@ -53,7 +53,7 @@ class FakeCourseRepository:
     async def update(self, course) -> None:
         self.items[course.id] = course
 
-    async def delete(self, course_id) -> None:
+    async def remove(self, course_id) -> None:
         del self.items[course_id]
 
 
@@ -73,7 +73,7 @@ class FakeModuleRepository:
     async def update(self, module) -> None:
         self.items[module.id] = module
 
-    async def delete(self, module_id) -> None:
+    async def remove(self, module_id) -> None:
         del self.items[module_id]
 
 
@@ -93,7 +93,7 @@ class FakeSectionRepository:
     async def update(self, section) -> None:
         self.items[section.id] = section
 
-    async def delete(self, section_id) -> None:
+    async def remove(self, section_id) -> None:
         del self.items[section_id]
 
 
@@ -113,7 +113,7 @@ class FakeLectureRepository:
     async def update(self, lecture) -> None:
         self.items[lecture.id] = lecture
 
-    async def delete(self, lecture_id) -> None:
+    async def remove(self, lecture_id) -> None:
         del self.items[lecture_id]
 
 

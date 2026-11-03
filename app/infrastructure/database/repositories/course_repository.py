@@ -59,7 +59,7 @@ class SqlAlchemyCourseRepository(CourseRepository):
         )
         await self.session.flush()
 
-    async def delete(self, course_id: UUID):
+    async def remove(self, course_id: UUID):
         model = await self.session.get(CourseModel, str(course_id))
         if model is None:
             return

@@ -66,7 +66,7 @@ class SqlAlchemySectionRepository(SectionRepository):
         )
         await self.session.flush()
 
-    async def delete(self, section_id: UUID) -> None:
+    async def remove(self, section_id: UUID) -> None:
         model = await self.session.get(SectionModel, str(section_id))
         if model is None:
             return

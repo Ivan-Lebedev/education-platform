@@ -27,7 +27,7 @@ class DeleteSectionUseCase:
 
             await delete_section_lectures(section=section, uow=self.uow)
 
-            await self.uow.sections.delete(command.section_id)
+            await self.uow.sections.remove(command.section_id)
 
             module = await self.uow.modules.get_by_id(section.module_id)
             if module:

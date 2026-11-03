@@ -27,7 +27,7 @@ class DeleteModuleUseCase:
 
             await delete_module_sections(module=module, uow=self.uow)
 
-            await self.uow.modules.delete(command.module_id)
+            await self.uow.modules.remove(command.module_id)
 
             course = await self.uow.courses.get_by_id(module.course_id)
             if course is not None:

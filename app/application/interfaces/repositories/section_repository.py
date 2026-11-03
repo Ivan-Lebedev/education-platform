@@ -24,5 +24,5 @@ class SectionRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def delete(self, section_id: UUID) -> None:
+    async def remove(self, section_id: UUID) -> None:
         raise NotImplementedError
