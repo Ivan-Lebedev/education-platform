@@ -91,3 +91,100 @@ async def test_get_lecture_returns_full_content(
     payload = response.json()
     assert payload['id'] == seeded_course_tree.lecture_id
     assert payload['content'] == seeded_course_tree.lecture_content
+
+
+async def test_delete_lecture(
+    client: AsyncClient,
+    seeded_course_tree: SimpleNamespace,
+    admin_auth_headers: dict[str, str],
+) -> None:
+    "Сценарий удаления лекции по идентификатору."
+
+    delete_response = await client.delete(
+        f'/api/admin/lectures/{seeded_course_tree.lecture_id}',
+        headers=admin_auth_headers,
+    )
+    assert delete_response.status_code == 204
+
+    lecture_response = await client.get(f'/api/lectures/{seeded_course_tree.lecture_id}')
+    assert lecture_response.status_code == 404
+    lecture_response_payload = lecture_response.json()
+    assert lecture_response_payload['error'] == 'lecture_not_found'
+    assert lecture_response_payload['message'] == 'Lecture not found.'
+
+    course_structure_response = await client.get(
+        f'/api/courses/{seeded_course_tree.course_id}/structure'
+    )
+    assert course_structure_response.status_code == 200
+    course_structure_response_payload = course_structure_response.json()
+    assert course_structure_response_payload['title'] == seeded_course_tree.course_title
+    assert len(course_structure_response_payload['modules']) == 1
+    assert len(course_structure_response_payload['modules'][0]['sections']) == 1
+    assert len(course_structure_response_payload['modules'][0]['sections'][0]['lectures']) == 0
+
+
+async def test_delete_section(
+    client: AsyncClient,
+    seeded_course_tree: SimpleNamespace,
+    admin_auth_headers: dict[str, str],
+) -> None:
+    "Сценарий удаления раздела по идентификатору."
+
+    delete_response = await client.delete(
+        f'/api/admin/sections/{seeded_course_tree.section_id}',
+        headers=admin_auth_headers,
+    )
+    assert delete_response.status_code == 204
+
+    course_structure_response = await client.get(
+        f'/api/courses/{seeded_course_tree.course_id}/structure'
+    )
+    assert course_structure_response.status_code == 200
+    course_structure_response_payload = course_structure_response.json()
+    assert course_structure_response_payload['title'] == seeded_course_tree.course_title
+    assert len(course_structure_response_payload['modules']) == 1
+    assert len(course_structure_response_payload['modules'][0]['sections']) == 0
+
+
+async def test_delete_module(
+    client: AsyncClient,
+    seeded_course_tree: SimpleNamespace,
+    admin_auth_headers: dict[str, str],
+) -> None:
+    "Сценарий удаления модуля по идентификатору."
+
+    delete_response = await client.delete(
+        f'/api/admin/modules/{seeded_course_tree.module_id}',
+        headers=admin_auth_headers,
+    )
+    assert delete_response.status_code == 204
+
+    course_structure_response = await client.get(
+        f'/api/courses/{seeded_course_tree.course_id}/structure'
+    )
+    assert course_structure_response.status_code == 200
+    course_structure_response_payload = course_structure_response.json()
+    assert course_structure_response_payload['title'] == seeded_course_tree.course_title
+    assert len(course_structure_response_payload['modules']) == 0
+
+
+async def test_delete_course(
+    client: AsyncClient,
+    seeded_course_tree: SimpleNamespace,
+    admin_auth_headers: dict[str, str],
+) -> None:
+    "Сценарий удаления курса по идентификатору."
+
+    delete_response = await client.delete(
+        f'/api/admin/courses/{seeded_course_tree.module_id}',
+        headers=admin_auth_headers,
+    )
+    assert delete_response.status_code == 204
+
+    course_structure_response = await client.get(
+        f'/api/courses/{seeded_course_tree.course_id}/structure'
+    )
+    assert course_structure_response.status_code == 404
+    course_structure_response_payload = course_structure_response.json()
+    assert course_structure_response_payload['error'] == 'course_not_found'
+    assert course_structure_response_payload['message'] == 'Course not found.'

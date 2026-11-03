@@ -90,4 +90,5 @@ async def test_mvp_flow_from_login_to_public_read(
     # Проверка наличия курса после его удаления.
     structure_after_course_delete_response = await client.get(f'/api/courses/{course_id}')
     assert structure_after_course_delete_response.status_code == 404
+    assert structure_after_course_delete_response.json()['error'] == 'course_not_found'
     assert structure_after_course_delete_response.json()['message'] == 'Course not found.'
