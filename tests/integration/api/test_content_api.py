@@ -176,7 +176,7 @@ async def test_delete_course(
     "Сценарий удаления курса по идентификатору."
 
     delete_response = await client.delete(
-        f'/api/admin/courses/{seeded_course_tree.module_id}',
+        f'/api/admin/courses/{seeded_course_tree.course_id}',
         headers=admin_auth_headers,
     )
     assert delete_response.status_code == 204
