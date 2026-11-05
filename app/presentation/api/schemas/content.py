@@ -56,6 +56,7 @@ class SectionBaseResponse(BaseModel):
 class SectionStructureResponse(SectionBaseResponse):
     "Схема данных тела ответа при получении структуры раздела."
 
+    question_ids: list[UUID]
     lectures: list[LectureStructureResponse]
 
 

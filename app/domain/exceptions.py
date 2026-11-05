@@ -20,3 +20,14 @@ class InvalidLectureError(DomainError):
 
 class InvalidUserError(DomainError):
     "Общее исключение сущности 'Пользователь'."
+
+
+class SectionQuestionAlreadyAttachedError(DomainError):
+    """
+    Исключение, возникающее если попытаться добавить id вопроса в раздел,
+    где этот вопрос уже присутствует.
+    """
+
+
+class SectionQuestionNotAttachedError(DomainError):
+    "Исключение, возникающее когда запрашиваемый вопрос отсутствует в разделе."
