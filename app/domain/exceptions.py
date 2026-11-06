@@ -31,3 +31,7 @@ class SectionQuestionAlreadyAttachedError(DomainError):
 
 class SectionQuestionNotAttachedError(DomainError):
     "Исключение, возникающее когда запрашиваемый вопрос отсутствует в разделе."
+
+
+class InvalidQuestionError(DomainError):
+    "Общее исключение сущности 'Вопрос'."
