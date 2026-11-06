@@ -39,3 +39,7 @@ class InvalidQuestionError(DomainError):
 
 class InvalidAnswerOptionError(DomainError):
     "Общее исключение сущности 'Вариант ответа на вопрос'."
+
+
+class InvalidQuestionAttemptError(DomainError):
+    "Общее исключение сущности 'Попытка ответа на вопрос'."
