@@ -1,3 +1,4 @@
+from .answer_option import AnswerOption
 from .course import Course
 from .lecture import Lecture
 from .module import Module
@@ -6,11 +7,12 @@ from .section import Section
 from .user import User, UserRole
 
 __all__ = [
+    'AnswerOption',
     'Course',
-    'Module',
-    'Section',
     'Lecture',
+    'Module',
     'Question',
+    'Section',
     'User',
     'UserRole',
 ]

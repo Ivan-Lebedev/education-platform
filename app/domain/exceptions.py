@@ -35,3 +35,7 @@ class SectionQuestionNotAttachedError(DomainError):
 
 class InvalidQuestionError(DomainError):
     "Общее исключение сущности 'Вопрос'."
+
+
+class InvalidAnswerOptionError(DomainError):
+    "Общее исключение сущности 'Вариант ответа на вопрос'."

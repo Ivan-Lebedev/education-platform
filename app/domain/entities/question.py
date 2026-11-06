@@ -7,7 +7,7 @@ from app.domain.exceptions import InvalidQuestionError
 @dataclass(slots=True)
 class Question:
     """
-    Доменная сущность 'Вопрос' — интерактивный блок внутри сущности 'Раздел'.
+    Доменная сущность 'Вопрос' — блок внутри сущности 'Раздел'.
 
     Attributes:
         id (UUID): УИН экземпляра сущности.
