@@ -43,3 +43,7 @@ class InvalidAnswerOptionError(DomainError):
 
 class InvalidQuestionAttemptError(DomainError):
     "Общее исключение сущности 'Попытка ответа на вопрос'."
+
+
+class QuestionAttemptLimitExceededError(DomainError):
+    "Исключение, возникающее когда у студента не осталось попыток ответа на текущий вопрос."

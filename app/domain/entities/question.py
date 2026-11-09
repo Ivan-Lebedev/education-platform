@@ -3,7 +3,10 @@ from dataclasses import dataclass, field
 from enum import StrEnum
 from uuid import UUID
 
-from app.domain.exceptions import InvalidQuestionError
+from app.domain.exceptions import (
+    InvalidQuestionError,
+    QuestionAttemptLimitExceededError,
+)
 
 
 class QuestionType(StrEnum):
@@ -137,3 +140,28 @@ class Question:
             raise InvalidQuestionError(
                 'Multiple choice question must have at least two correct answer options.'
             )
+
+    def can_start_attempt(self, existing_attempts_count: int) -> bool:
+        """
+        Разрешена ли еще одна попытка при текущем числе уже существующих попыток.
+
+        Args:
+            existing_attempts_count (int): Текущее количество реализованных попыток
+                ответа на вопрос.
+        """
+
+        return existing_attempts_count < self.max_attempts
+
+    def ensure_attempt_available(self, existing_attempts_count: int) -> None:
+        """
+        Проверяет доступность попыток для ответа на вопрос.
+
+        Args:
+            existing_attempts_count (int): Текущее количество реализованных попыток
+                ответа на вопрос.
+
+        Raises:
+            QuestionAttemptLimitExceededError: Если закончились доступные попытки ответа на вопрос.
+        """
+        if not self.can_start_attempt(existing_attempts_count):
+            raise QuestionAttemptLimitExceededError('Question attempt limit has been reached.')

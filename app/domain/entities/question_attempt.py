@@ -40,3 +40,18 @@ class QuestionAttempt:
             raise InvalidQuestionAttemptError(
                 'Question attempt cannot contain duplicate selected options.'
             )
+
+    def is_first_attempt(self) -> bool:
+        return self.attempt_number == 1
+
+    def is_repeat_attempt(self) -> bool:
+        return self.attempt_number > 1
+
+    def has_selected_options(self) -> bool:
+        return bool(self.selected_option_ids)
+
+    def selected_options_count(self) -> int:
+        return len(self.selected_option_ids)
+
+    def uses_option(self, answer_option_id: UUID) -> bool:
+        return answer_option_id in self.selected_option_ids
