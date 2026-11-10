@@ -47,3 +47,14 @@ class InvalidQuestionAttemptError(DomainError):
 
 class QuestionAttemptLimitExceededError(DomainError):
     "Исключение, возникающее когда у студента не осталось попыток ответа на текущий вопрос."
+
+
+class InvalidQuestionResultError(DomainError):
+    "Исключение, возникающее когда ответ на вопрос содержит некорректные данные."
+
+
+class QuestionAlreadySolvedError(DomainError):
+    """
+    Исключение, возникающее когда пользователь пытается ответить на вопрос,
+    при наличии положительной попытки, сделанной ранее.
+    """

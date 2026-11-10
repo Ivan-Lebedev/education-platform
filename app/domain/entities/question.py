@@ -3,15 +3,18 @@ from dataclasses import dataclass, field
 from enum import StrEnum
 from uuid import UUID
 
+from app.domain.entities import AnswerOption, QuestionResultStatus
 from app.domain.exceptions import (
     InvalidQuestionError,
+    InvalidQuestionResultError,
+    QuestionAlreadySolvedError,
     QuestionAttemptLimitExceededError,
 )
 
 
 class QuestionType(StrEnum):
     """
-    "Варианты значений поля question_type сущности 'Вопрос'."
+    "Варианты значений поля 'question_type' сущности 'Вопрос'."
 
     Attributes:
         SINGLE_CHOICE (str): Студент должен выбрать ровно один вариант.
@@ -103,10 +106,10 @@ class Question:
 
     def validate_answer_options_configuration(
         self,
-        answer_options: Sequence['AnswerOption'],  # type: ignore  # noqa: F821
+        answer_options: Sequence['AnswerOption'],
     ) -> None:
         """
-        Проверяет корректность конфигурации вариантов ответа для вопроса.
+        Проверка корректности конфигурации вариантов ответа для вопроса.
 
         Метод применяет бизнес-правила, зависящие от типа вопроса (одиночный или
         множественный выбор), и выбрасывает исключение при нарушении любого из них.
@@ -141,27 +144,95 @@ class Question:
                 'Multiple choice question must have at least two correct answer options.'
             )
 
-    def can_start_attempt(self, existing_attempts_count: int) -> bool:
+    def can_start_attempt(
+        self, existing_attempts_count: int, has_correct_attempt: bool = False
+    ) -> bool:
         """
         Разрешена ли еще одна попытка при текущем числе уже существующих попыток.
 
         Args:
             existing_attempts_count (int): Текущее количество реализованных попыток
                 ответа на вопрос.
+            has_correct_attempt (bool): Имеется ли уже успешная попытка.
         """
 
+        if has_correct_attempt:
+            return False
         return existing_attempts_count < self.max_attempts
 
-    def ensure_attempt_available(self, existing_attempts_count: int) -> None:
+    def ensure_attempt_available(
+        self, existing_attempts_count: int, has_correct_attempt: bool = False
+    ) -> None:
         """
-        Проверяет доступность попыток для ответа на вопрос.
+        Проверка доступности попыток для ответа на вопрос.
 
         Args:
             existing_attempts_count (int): Текущее количество реализованных попыток
                 ответа на вопрос.
+            has_correct_attempt (bool): Имеется ли уже успешная попытка.
 
         Raises:
+            QuestionAlreadySolvedError: Если уже имеется успешная попытка, сделанная ранее.
             QuestionAttemptLimitExceededError: Если закончились доступные попытки ответа на вопрос.
         """
+
+        if has_correct_attempt:
+            raise QuestionAlreadySolvedError('Question has already been answered correctly.')
         if not self.can_start_attempt(existing_attempts_count):
             raise QuestionAttemptLimitExceededError('Question attempt limit has been reached.')
+
+    def is_correct_selection(
+        self,
+        selected_option_ids: Sequence[UUID],
+        answer_options: Sequence['AnswerOption'],
+    ) -> bool:
+        """
+        Проверка корректности выбранных вариантов ответов на вопрос.
+
+        Args:
+            selected_option_ids (Sequence[UUID]): Идентификаторы выбранных студентом вариантов
+                ответов на вопрос.
+            answer_options (Sequence[AnswerOption]): Полученные из внешнего слоя экземпляры
+                вариантов ответов на вопрос.
+
+        Raises:
+            InvalidQuestionResultError: Если полученные из внешнего слоя экземпляры вариантов
+                ответов на вопрос не совпадают с возможными или среди выбранных студентом
+                идентификаторов вариантов ответов на вопрос имеются те,
+                которые не относятся к текущему вопросу.
+
+        Returns:
+            bool: Имеется ли полное совпадение выбранных студентом вариантов ответов на вопрос
+                с верными.
+        """
+
+        expected_option_ids = set(self.answer_option_ids)
+        actual_option_ids = {option.id for option in answer_options}
+        selected_ids = set(selected_option_ids)
+
+        if actual_option_ids != expected_option_ids:
+            raise InvalidQuestionResultError('Answer options do not match question configuration.')
+
+        if not selected_ids.issubset(actual_option_ids):
+            raise InvalidQuestionResultError('Selected options contain unknown ids.')
+
+        correct_option_ids = {option.id for option in answer_options if option.is_correct}
+        return selected_ids == correct_option_ids
+
+    def resolve_result_status(
+        self,
+        selected_option_ids: Sequence[UUID],
+        answer_options: Sequence['AnswerOption'],
+    ) -> QuestionResultStatus:
+        if self.is_correct_selection(selected_option_ids, answer_options):
+            return QuestionResultStatus.CORRECT
+        return QuestionResultStatus.INCORRECT
+
+    def resolve_awarded_points(
+        self,
+        selected_option_ids: Sequence[UUID],
+        answer_options: Sequence['AnswerOption'],
+    ) -> int:
+        if self.is_correct_selection(selected_option_ids, answer_options):
+            return self.reward_points
+        return 0
