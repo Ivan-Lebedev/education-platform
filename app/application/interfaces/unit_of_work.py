@@ -2,9 +2,12 @@ from abc import ABC, abstractmethod
 from types import TracebackType
 
 from .repositories import (
+    AnswerOptionRepository,
     CourseRepository,
     LectureRepository,
     ModuleRepository,
+    QuestionAttemptRepository,
+    QuestionRepository,
     SectionRepository,
     UserRepository,
 )
@@ -24,6 +27,9 @@ class UnitOfWork(ABC):
     modules: ModuleRepository
     sections: SectionRepository
     lectures: LectureRepository
+    questions: QuestionRepository
+    question_attempts: QuestionAttemptRepository
+    answer_options: AnswerOptionRepository
     users: UserRepository
 
     @abstractmethod

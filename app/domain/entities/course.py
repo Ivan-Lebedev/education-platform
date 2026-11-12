@@ -9,9 +9,17 @@ class Course:
     """
     Доменная сущность 'Курс' — основная модель проекта,
     вокруг которой строится образовательная платформа.
+
+    Attributes:
+        id (UUID): УИН экземпляра сущности.
+        author_id (UUID): УИН автора, которому принадлежит курс.
+        title (str): Название.
+        description (str): Описание.
+        module_ids (UUID): УИН модулей, входящих в курс.
     """
 
     id: UUID
+    author_id: UUID
     title: str
     description: str
     module_ids: list[UUID] = field(default_factory=list[UUID])
@@ -29,6 +37,9 @@ class Course:
         self.title = title
         self.description = description
         self._validate()
+
+    def is_owned_by(self, user_id: UUID) -> bool:
+        return self.author_id == user_id
 
     def add_module(self, module_id: UUID) -> None:
         if module_id not in self.module_ids:

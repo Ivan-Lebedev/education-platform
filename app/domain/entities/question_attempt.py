@@ -20,10 +20,10 @@ class QuestionAttempt:
 
     Attributes:
         id (UUID): УИН экземпляра сущности.
-        question_id (UUID): Вопрос, которому принадлежит попытка.
-        student_id (UUID): Студент, которому принадлежит попытка.
+        question_id (UUID): УИН вопроса, которому принадлежит попытка.
+        student_id (UUID): УИН студента, которому принадлежит попытка.
         attempt_number (int): Порядковый номер попытки.
-        selected_option_ids list[UUID]: Выбранные варианты ответов на вопрос.
+        selected_option_ids list[UUID]: УИН выбранных студентом вариантов ответов на вопрос.
         created_at (datetime): Дата и время попытки ответа на вопрос.
         result_status (QuestionResultStatus | None): Статус попытки.
         awarded_points (int | None): Начисленные баллы за попытку.

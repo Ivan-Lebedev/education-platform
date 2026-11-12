@@ -32,7 +32,7 @@ class Question:
 
     Attributes:
         id (UUID): УИН экземпляра сущности.
-        section_id (UUID): Раздел, к которому принадлежит вопрос.
+        section_id (UUID): УИН раздела, которому принадлежит вопрос.
         text (str): Формулировка вопроса.
         position (int): Порядковый номер вопроса внутри раздела.
         question_type (QuestionType): Тип вопроса.
