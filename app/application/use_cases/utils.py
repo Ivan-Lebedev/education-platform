@@ -4,6 +4,7 @@ from app.domain.entities import Course, Module, Section
 
 async def delete_section_lectures(section: Section, uow: UnitOfWork) -> None:
     "Удаление всех лекций указанного раздела."
+    # TODO: Рассмотреть каскадное удаление вопросов и связанных с ними сущностей, принадлежащих разделу.  # noqa: E501
 
     for lecture_id in section.lecture_ids:
         lecture = await uow.lectures.get_by_id(lecture_id)

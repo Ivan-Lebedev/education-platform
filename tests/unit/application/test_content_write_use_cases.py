@@ -1,3 +1,4 @@
+# TODO: Внести изменения в тесты после изменения сценариев.
 from uuid import uuid4
 
 import pytest
